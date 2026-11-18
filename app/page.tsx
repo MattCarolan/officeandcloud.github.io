@@ -1,3 +1,5 @@
+import { Registry } from "@/components/Registry";
+import { FutureCapability } from "@/components/FutureCapability";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
 import { Manifesto } from "@/components/Manifesto";
@@ -19,13 +21,26 @@ export default function HomePage() {
       <main>
         <Hero />
         <Manifesto />
+        <Registry />
         <Shift />
-        <ProductMockups />
-        <Workforce />
-        <Guardrails />
-        <Infrastructure />
-        <Security />
-        <Vision />
+        <FutureCapability>
+          <ProductMockups />
+        </FutureCapability>
+        <FutureCapability>
+          <Workforce />
+        </FutureCapability>
+        <FutureCapability>
+          <Guardrails />
+        </FutureCapability>
+        <FutureCapability>
+          <Infrastructure />
+        </FutureCapability>
+        <FutureCapability>
+          <Security />
+        </FutureCapability>
+        <FutureCapability>
+          <Vision />
+        </FutureCapability>
         <Beta />
         <FAQ />
       </main>

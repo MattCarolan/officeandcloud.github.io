@@ -24,6 +24,7 @@ import {
 /* ------------------------------------------------------------------ */
 
 export const navLinks = [
+  { label: "AI Registry", href: "#registry" },
   { label: "The shift", href: "#shift" },
   { label: "Platform", href: "#platform" },
   { label: "Workforce", href: "#workforce" },
@@ -375,40 +376,36 @@ export interface FaqItem {
 
 export const faqs: FaqItem[] = [
   {
-    q: "What is OfficeAndCloud?",
-    a: "OfficeAndCloud is the control plane for your digital workforce. It's a single platform to deploy, govern, monitor, secure and audit AI employees — wherever they run. Think of it as the management layer that sits above your models and infrastructure, the way an HR and IT system sits above your people and devices.",
+    q: "What is Office & Cloud?",
+    a: "Office & Cloud is building the enterprise control plane for AI employees. The AI Registry is our first private-preview capability. Discovery, monitoring, deployment, agent controls and enforcement are part of the future platform vision.",
   },
   {
-    q: "Do I need OpenAI to use it?",
-    a: "No. OfficeAndCloud is model-agnostic by design. OpenAI works, but so does Anthropic, Google, Mistral, Llama, Qwen and any open model you self-host. You bring the models; we govern how they're used.",
+    q: "What can I use in the private preview?",
+    a: "Register AI platforms and team usage, assign accountable managers and technical owners, classify risk, link governance evidence, complete reviews, record audit history and export CSV inventory.",
   },
   {
-    q: "Can I use local models?",
-    a: "Yes. Workers can run on a laptop, an on-prem GPU cluster, or fully air-gapped — and still appear in the same dashboard, under the same policies and audit trail as everything else.",
+    q: "Do I need to register every agent?",
+    a: "No. Managers govern their team’s use of an AI platform. Ordinary employees continue to manage individual agents in their chosen platform and do not need Office & Cloud accounts.",
   },
   {
-    q: "Can I self-host the platform?",
-    a: "Yes. OfficeAndCloud offers managed cloud, single-tenant, and self-hosted deployments, including sovereign and air-gapped environments where your data never leaves your boundary.",
+    q: "Does the registry connect to my AI providers?",
+    a: "The initial registry is maintained by your organization. Automatic discovery, provider integrations, agent monitoring, kill switches and deployment are future capabilities.",
   },
   {
-    q: "Will you support OpenClaw?",
-    a: "Yes. OpenClaw agents register as first-class workers, with the same identity, permissions, memory controls and approvals as any other runtime. Support lands during the private preview.",
+    q: "Is this NIST-certified?",
+    a: "No. Registry fields and review actions are mapped to relevant NIST AI RMF 1.0 outcomes. This supports governance; it does not certify compliance or produce a compliance score.",
   },
   {
-    q: "Will you support Claude Code?",
-    a: "Yes. Claude Code is a supported developer runtime. You can deploy it as a managed worker with scoped repository permissions, PR-only access, and full activity logging.",
+    q: "Can I use local models or self-host Office & Cloud?",
+    a: "You can register any platform, including local or self-hosted AI. The current preview of Office & Cloud itself runs as a managed SaaS. Self-hosted and sovereign platform deployments remain future concepts.",
   },
   {
-    q: "Will you support MCP?",
-    a: "Yes. The Model Context Protocol is a core integration surface. Connect MCP tools and servers once, then grant or revoke them per worker with policy and full audit.",
+    q: "Will you support MCP, OpenClaw and Claude Code?",
+    a: "These are intended future integration surfaces. Their presence in concept demonstrations does not mean they are integrated in the initial AI Registry.",
   },
   {
-    q: "Can I run this on-premises?",
-    a: "Absolutely. On-prem is a first-class target, not an afterthought. Manage on-prem workers side by side with cloud and local ones from a single pane of glass.",
-  },
-  {
-    q: "When does the private preview begin?",
-    a: "The private preview is rolling out in waves to early design partners now. Request access and we'll reach out based on your stack and use case.",
+    q: "How do private-preview invitations work?",
+    a: "Legitimate applications are accepted automatically. Invitations are sent after about 15 minutes, typically within one hour. Follow your secure link, verify your email, and create or join your organization. The preview is free.",
   },
 ];
 
