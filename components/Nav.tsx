@@ -42,7 +42,7 @@ export function Nav() {
             <Logo />
           </Link>
 
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-4 xl:flex">
             {navLinks.map((l) => (
               <Link
                 key={l.href}
@@ -54,12 +54,12 @@ export function Nav() {
             ))}
           </div>
 
-          <div className="hidden items-center gap-3 md:flex">
+          <div className="hidden items-center gap-3 xl:flex">
             <Link
-              href="#preview"
+              href="https://app.officeandcloud.com"
               className="text-sm text-muted transition-colors hover:text-ink"
             >
-              Sign in
+              Login
             </Link>
             <LinkButton href="#preview" size="md">
               Request access
@@ -67,7 +67,7 @@ export function Nav() {
           </div>
 
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-ink md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-ink xl:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
@@ -84,7 +84,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="container-x md:hidden"
+            className="container-x xl:hidden"
           >
             <div className="mt-2 glass-strong rounded-2xl p-4">
               <div className="flex flex-col">
@@ -100,11 +100,13 @@ export function Nav() {
                 ))}
               </div>
               <div className="mt-3 border-t border-white/[0.06] pt-3">
-                <LinkButton
-                  href="#preview"
-                  size="lg"
-                  className="w-full"
+                <a
+                  href="https://app.officeandcloud.com"
+                  className="mb-4 block px-3 text-sm text-muted"
                 >
+                  Login
+                </a>
+                <LinkButton href="#preview" size="lg" className="w-full">
                   Request access
                 </LinkButton>
               </div>

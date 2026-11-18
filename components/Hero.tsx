@@ -1,7 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { ControlPlaneViz } from "./ControlPlaneViz";
 import { LinkButton } from "./ui/Button";
@@ -32,7 +37,11 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
   const vizY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 120]);
-  const vizScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.08]);
+  const vizScale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [1, reduce ? 1 : 1.08],
+  );
   const textY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -40]);
 
   return (
@@ -68,7 +77,7 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ok/70" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-ok" />
           </span>
-          Private preview · rolling out now
+          AI Registry · private preview
           <ArrowRight
             size={13}
             className="transition-transform group-hover:translate-x-0.5"
@@ -81,7 +90,11 @@ export function Hero() {
               key={w}
               initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.7, ease: easeOut, delay: 0.1 + i * 0.08 }}
+              transition={{
+                duration: 0.7,
+                ease: easeOut,
+                delay: 0.1 + i * 0.08,
+              }}
               className={i >= 2 ? "text-gradient" : ""}
             >
               {w}
@@ -96,8 +109,8 @@ export function Hero() {
           transition={{ duration: 0.7, ease: easeOut, delay: 0.5 }}
           className="mt-6 max-w-xl text-balance text-base leading-relaxed text-muted sm:text-lg"
         >
-          The enterprise control plane for AI employees. Deploy, govern,
-          monitor and secure AI agents anywhere they run.
+          The enterprise control plane for AI employees. Deploy, govern, monitor
+          and secure AI agents anywhere they run.
         </motion.p>
 
         <motion.div
@@ -131,15 +144,12 @@ export function Hero() {
           className="container-x"
         >
           <p className="mb-3 text-center font-mono text-[10px] uppercase tracking-[0.24em] text-faint">
-            Model & runtime agnostic — works with
+            Platform vision · model & runtime agnostic
           </p>
           <div className="mask-fade-edges overflow-hidden">
             <div className="flex w-max animate-marquee gap-8 whitespace-nowrap">
               {[...worksWith, ...worksWith].map((w, i) => (
-                <span
-                  key={i}
-                  className="font-mono text-sm text-muted/70"
-                >
+                <span key={i} className="font-mono text-sm text-muted/70">
                   {w}
                 </span>
               ))}
