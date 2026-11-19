@@ -78,9 +78,7 @@ export function Beta() {
             <Reveal delay={0.1}>
               <p className="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg">
                 Apply for early access to the Office &amp; Cloud AI Registry and
-                help shape how teams govern their AI workforce. We’ll confirm
-                your request by email and send account setup instructions about
-                20 minutes later.
+                help shape how teams govern their AI workforce.
               </p>
             </Reveal>
 
@@ -126,8 +124,7 @@ export function Beta() {
                   <input name="website" tabIndex={-1} autoComplete="off" />
                 </label>
                 <p className="text-sm leading-relaxed text-muted">
-                  We use these details to email you about your request and set up
-                  your preview access. Read the{" "}
+                  We use these details to contact you about your preview request. Read the{" "}
                   <Link href="/privacy/" className="text-brand-400 underline">
                     Privacy Notice
                   </Link>{" "}
@@ -148,8 +145,8 @@ export function Beta() {
                 </button>
                 {submitted && (
                   <p role="status" className="text-sm text-ok">
-                    Check your inbox for a confirmation. Expect your account setup
-                    instructions in a separate email about 20 minutes later.
+                    Thanks for requesting early access. Check your inbox for a
+                    confirmation that we received your request.
                   </p>
                 )}
                 {error && (
