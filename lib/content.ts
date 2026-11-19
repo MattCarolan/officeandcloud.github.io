@@ -424,8 +424,8 @@ export const footerLinks = {
     { label: "FAQ", href: "#faq" },
   ],
   Legal: [
-    { label: "Privacy", href: "#" },
-    { label: "Terms", href: "#" },
+    { label: "Privacy", href: "/privacy/" },
+    { label: "Terms", href: "/terms/" },
   ],
   Connect: [
     { label: "LinkedIn", href: "#" },
