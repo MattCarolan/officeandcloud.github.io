@@ -1,6 +1,6 @@
 # OfficeAndCloud — marketing site
 
-The launch / private-preview marketing site for **OfficeAndCloud**, the control
+The launch and early-access marketing site for **OfficeAndCloud**, the control
 plane for the world's digital workforce: a single platform to deploy, govern,
 monitor, secure and audit AI employees — wherever they run (local, on-prem, AWS,
 Azure, GCP, Kubernetes, Docker, private and hybrid cloud).
@@ -65,7 +65,7 @@ components/
   ui/                   # shared primitives (Button, Reveal, SectionHeading, …)
 lib/
   content.ts        # ALL copy + data (single source of truth)
-  config.ts         # Tally form ID for the private-preview signup
+  config.ts         # AWS application endpoint and app sign-in URL
   motion.ts         # shared Framer Motion variants
   clsx.ts           # tiny className helper (no dependency)
 ```
@@ -76,30 +76,13 @@ footer links, etc.
 
 ---
 
-## The private-preview signup form
+## The early-access signup form
 
-Signups are handled by a **[Tally](https://tally.so) form**, embedded directly
-in the "private preview" section (`components/Beta.tsx`). Because Tally hosts and
-stores the responses, there's no backend to run — ideal for a static GitHub
-Pages site.
-
-The form is referenced by ID in **`lib/config.ts`**:
-
-```ts
-export const PREVIEW_FORM_ID = "81W68o"; // the part after tally.so/r/
-```
-
-To use a different form, create one in Tally and change that ID. To make the
-embed blend into this dark site, open your form in Tally's designer and:
-
-- give the form a **dark theme** (the embed already requests a transparent
-  background and hides Tally's title, so it inherits the section background);
-- optionally enable **email notifications** (Settings → Notifications) or wire up
-  a **webhook / integration** to Notion, Google Sheets or Slack.
-
-Tally's free plan allows unlimited submissions. The embed auto-resizes to the
-form's height, and there's a no-JavaScript fallback link to the hosted form
-(`https://tally.so/r/<id>`).
+The form in `components/Beta.tsx` sends applications to the Office & Cloud API
+on AWS. The API stores the application and queues the acknowledgment email.
+Around 20 minutes after the acknowledgment, AWS sends a separate acceptance
+email with account setup instructions. Account setup and sign-in use the AWS
+app at `https://app.officeandcloud.com/`. Both URLs are in `lib/config.ts`.
 
 ---
 
@@ -140,21 +123,11 @@ npx serve out      # preview the static export (optional)
 
 ### Notes & limitations on Pages
 
-- **No server code.** Static hosting can't run API routes, so signups go through
-  an embedded Tally form — see *The private-preview signup form* above.
+- **The site is static.** AWS handles submissions and sends the emails.
 - **`.nojekyll`** is included (`public/.nojekyll`) so GitHub doesn't strip the
   `_next/` asset folder.
 - Update `siteUrl` in `app/sitemap.ts`, `app/robots.ts` and `app/layout.tsx` to
   your live URL so SEO metadata and the sitemap resolve correctly.
-
-### Prefer the form to "just work"?
-
-If you'd rather collect signups with your own backend instead of Tally, connect
-the same repo to **Vercel** or **Cloudflare Pages** (both free, both have
-first-class Next.js support). They run server code, so you could add an
-`app/api/...` route and post to it directly.
-
----
 
 ## Design system
 

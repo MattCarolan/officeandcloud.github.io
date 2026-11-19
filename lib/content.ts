@@ -407,8 +407,8 @@ export const faqs: FaqItem[] = [
     a: "Absolutely. On-prem is a first-class target, not an afterthought. Manage on-prem workers side by side with cloud and local ones from a single pane of glass.",
   },
   {
-    q: "When does the private preview begin?",
-    a: "The private preview is rolling out in waves to early design partners now. Request access and we'll reach out based on your stack and use case.",
+    q: "How do I get early access?",
+    a: "Submit the form on this page. We’ll email you a confirmation, followed by an acceptance email with account setup instructions about 20 minutes later.",
   },
 ];
 
@@ -420,12 +420,12 @@ export const footerLinks = {
   Product: [
     { label: "About", href: "#vision" },
     { label: "Vision", href: "#vision" },
-    { label: "Private preview", href: "#preview" },
+    { label: "Early access", href: "#preview" },
     { label: "FAQ", href: "#faq" },
   ],
   Legal: [
-    { label: "Privacy", href: "#" },
-    { label: "Terms", href: "#" },
+    { label: "Privacy", href: "/privacy/" },
+    { label: "Terms", href: "/terms/" },
   ],
   Connect: [
     { label: "LinkedIn", href: "#" },
