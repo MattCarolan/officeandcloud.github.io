@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { Check, Sparkles } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
 import { APP_URL, PREVIEW_APPLICATION_URL } from "@/lib/config";
@@ -124,6 +125,17 @@ export function Beta() {
                   Website
                   <input name="website" tabIndex={-1} autoComplete="off" />
                 </label>
+                <p className="text-sm leading-relaxed text-muted">
+                  We use these details to email you about your request and set up
+                  your preview access. Read the{" "}
+                  <Link href="/privacy/" className="text-brand-400 underline">
+                    Privacy Notice
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/terms/" className="text-brand-400 underline">
+                    Preview Terms
+                  </Link>.
+                </p>
                 <button
                   disabled={formDisabled}
                   className="rounded-xl bg-brand-500 px-5 py-3 text-sm font-medium text-white disabled:opacity-50"
@@ -148,10 +160,6 @@ export function Beta() {
                 <noscript>
                   <p className="text-sm text-muted">Enable JavaScript to submit the form.</p>
                 </noscript>
-                <p className="text-xs leading-relaxed text-faint">
-                  We use these details to email you about your request and set up
-                  your preview access.
-                </p>
                 <a href={APP_URL} className="text-center text-sm text-brand-400">
                   Already have access? Sign in
                 </a>
