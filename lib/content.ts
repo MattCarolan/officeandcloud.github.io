@@ -408,7 +408,7 @@ export const faqs: FaqItem[] = [
   },
   {
     q: "How do I get early access?",
-    a: "Submit the form on this page. We’ll email you a confirmation, followed by an acceptance email with account setup instructions about 20 minutes later.",
+    a: "Submit the form on this page. We’ll email you to confirm we received your request.",
   },
 ];
 
