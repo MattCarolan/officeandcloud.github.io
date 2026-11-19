@@ -68,7 +68,7 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ok/70" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-ok" />
           </span>
-          Private preview · rolling out now
+          Early access · applications open
           <ArrowRight
             size={13}
             className="transition-transform group-hover:translate-x-0.5"

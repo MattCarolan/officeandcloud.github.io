@@ -1,68 +1,58 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Check, Sparkles } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
-import { PREVIEW_FORM_EMBED_SRC, PREVIEW_FORM_URL } from "@/lib/config";
-
-declare global {
-  interface Window {
-    Tally?: { loadEmbeds: () => void };
-  }
-}
-
-const TALLY_SCRIPT = "https://tally.so/widgets/embed.js";
-
-/**
- * Loads Tally's embed script (once) and hydrates the iframe. The script wires up
- * the transparent background + dynamic-height auto-resize via postMessage.
- */
-function useTallyEmbed() {
-  useEffect(() => {
-    const hydrate = () => {
-      if (window.Tally) {
-        window.Tally.loadEmbeds();
-        return;
-      }
-      // Fallback: promote data-tally-src -> src manually.
-      document
-        .querySelectorAll<HTMLIFrameElement>(
-          "iframe[data-tally-src]:not([src])",
-        )
-        .forEach((el) => {
-          el.src = el.dataset.tallySrc as string;
-        });
-    };
-
-    if (window.Tally) {
-      hydrate();
-      return;
-    }
-
-    const existing = document.querySelector<HTMLScriptElement>(
-      `script[src="${TALLY_SCRIPT}"]`,
-    );
-    if (existing) {
-      existing.addEventListener("load", hydrate);
-      return () => existing.removeEventListener("load", hydrate);
-    }
-
-    const script = document.createElement("script");
-    script.src = TALLY_SCRIPT;
-    script.onload = hydrate;
-    script.onerror = hydrate;
-    document.body.appendChild(script);
-  }, []);
-}
+import { APP_URL, PREVIEW_APPLICATION_URL } from "@/lib/config";
 
 const perks = [
-  "Free during the private preview",
+  "Free during early access",
   "Hands-on onboarding with our team",
   "A direct line into the product roadmap",
 ];
+const fields = [
+  ["name", "Your name", "text", "name", 160],
+  ["email", "Work email", "email", "email", 254],
+  ["organization", "Organization", "text", "organization", 160],
+] as const;
 
 export function Beta() {
-  useTallyEmbed();
+  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const formDisabled = startedAt === null || busy || submitted;
+
+  useEffect(() => setStartedAt(Date.now()), []);
+
+  async function requestPreview(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (formDisabled) return;
+    const form = event.currentTarget;
+    const application = Object.fromEntries(new FormData(form));
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch(PREVIEW_APPLICATION_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...application, startedAt }),
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || result?.accepted !== true) {
+        setError(
+          result?.error || "Your request could not be submitted. Please try again.",
+        );
+        return;
+      }
+      form.reset();
+      setSubmitted(true);
+    } catch {
+      setError("Your request could not be submitted. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   return (
     <section id="preview" className="relative scroll-mt-24 py-24 sm:py-32">
@@ -76,7 +66,7 @@ export function Beta() {
             <Reveal>
               <span className="inline-flex items-center gap-2 eyebrow">
                 <Sparkles size={13} className="text-accent-400" />
-                Private preview
+                Early access
               </span>
             </Reveal>
             <Reveal delay={0.05}>
@@ -86,10 +76,10 @@ export function Beta() {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg">
-                We&apos;re inviting forward-thinking IT leaders, platform
-                engineers, cloud architects and AI builders to help shape the
-                future of enterprise AI management. Request access to the private
-                preview — it takes about a minute.
+                Apply for early access to the Office &amp; Cloud AI Registry and
+                help shape how teams govern their AI workforce. We’ll confirm
+                your request by email and send account setup instructions about
+                20 minutes later.
               </p>
             </Reveal>
 
@@ -108,52 +98,64 @@ export function Beta() {
                 ))}
               </ul>
             </Reveal>
-
-            <Reveal delay={0.2}>
-              <p className="mt-8 text-xs leading-relaxed text-faint">
-                Prefer a full page?{" "}
-                <a
-                  href={PREVIEW_FORM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted underline decoration-white/20 underline-offset-2 transition-colors hover:text-ink"
-                >
-                  Open the request form
-                </a>
-                .
-              </p>
-            </Reveal>
           </div>
 
-          {/* Right — embedded Tally form */}
           <Reveal delay={0.1}>
             <div className="glass-strong relative overflow-hidden rounded-3xl border border-white/[0.08] p-5 shadow-panel sm:p-7">
               {/* top hairline accent */}
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-400/40 to-transparent" />
 
-              <iframe
-                data-tally-src={PREVIEW_FORM_EMBED_SRC}
-                loading="lazy"
-                width="100%"
-                height={520}
-                frameBorder={0}
-                marginHeight={0}
-                marginWidth={0}
-                title="Request private preview access"
-                className="w-full"
-              />
-
-              <noscript>
-                <p className="text-center text-sm text-muted">
-                  <a
-                    href={PREVIEW_FORM_URL}
-                    className="text-ink underline underline-offset-2"
-                  >
-                    Open the request form
-                  </a>{" "}
-                  to join the private preview.
+              <form method="post" onSubmit={requestPreview} className="flex flex-col gap-5">
+                {fields.map(([name, label, type, autoComplete, maxLength]) => (
+                  <label key={name} className="text-sm text-muted">
+                    {label}
+                    <input
+                      name={name}
+                      type={type}
+                      autoComplete={autoComplete}
+                      maxLength={maxLength}
+                      required
+                      disabled={formDisabled}
+                      className="mt-2 w-full rounded-lg border border-white/10 bg-base/60 p-3 text-ink outline-none focus:border-brand-400"
+                    />
+                  </label>
+                ))}
+                <label aria-hidden="true" className="absolute -left-[10000px]">
+                  Website
+                  <input name="website" tabIndex={-1} autoComplete="off" />
+                </label>
+                <button
+                  disabled={formDisabled}
+                  className="rounded-xl bg-brand-500 px-5 py-3 text-sm font-medium text-white disabled:opacity-50"
+                >
+                  {busy
+                    ? "Sending…"
+                    : submitted
+                      ? "Request received"
+                      : "Request preview access"}
+                </button>
+                {submitted && (
+                  <p role="status" className="text-sm text-ok">
+                    Check your inbox for a confirmation. Expect your account setup
+                    instructions in a separate email about 20 minutes later.
+                  </p>
+                )}
+                {error && (
+                  <p role="alert" className="text-sm text-danger">
+                    {error}
+                  </p>
+                )}
+                <noscript>
+                  <p className="text-sm text-muted">Enable JavaScript to submit the form.</p>
+                </noscript>
+                <p className="text-xs leading-relaxed text-faint">
+                  We use these details to email you about your request and set up
+                  your preview access.
                 </p>
-              </noscript>
+                <a href={APP_URL} className="text-center text-sm text-brand-400">
+                  Already have access? Sign in
+                </a>
+              </form>
             </div>
           </Reveal>
         </div>

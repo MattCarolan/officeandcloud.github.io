@@ -86,7 +86,7 @@ export function FAQ() {
           <SectionHeading
             eyebrow="FAQ"
             title="Questions, answered."
-            description="Everything you might want to know before requesting the private preview. Still curious? Reach out and we'll get you the rest."
+            description="Questions about early access and what’s available in the preview."
           />
 
           <Reveal delay={0.1}>
