@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "./ui/Logo";
 import { LinkButton } from "./ui/Button";
 import { navLinks } from "@/lib/content";
+import { APP_SIGN_IN_URL } from "@/lib/config";
 import { clsx } from "@/lib/clsx";
 
 export function Nav() {
@@ -56,7 +57,7 @@ export function Nav() {
 
           <div className="hidden items-center gap-3 md:flex">
             <Link
-              href="#preview"
+              href={APP_SIGN_IN_URL}
               className="text-sm text-muted transition-colors hover:text-ink"
             >
               Sign in
@@ -98,6 +99,13 @@ export function Nav() {
                     {l.label}
                   </Link>
                 ))}
+                <Link
+                  href={APP_SIGN_IN_URL}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-3 text-[15px] text-muted transition-colors hover:bg-white/5 hover:text-ink"
+                >
+                  Sign in
+                </Link>
               </div>
               <div className="mt-3 border-t border-white/[0.06] pt-3">
                 <LinkButton

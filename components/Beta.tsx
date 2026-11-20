@@ -4,7 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { Check, Sparkles } from "lucide-react";
 import { Reveal } from "./ui/Reveal";
-import { APP_URL, PREVIEW_APPLICATION_URL } from "@/lib/config";
+import { APP_SIGN_IN_URL, PREVIEW_APPLICATION_URL } from "@/lib/config";
 
 const perks = [
   "Free during early access",
@@ -157,7 +157,7 @@ export function Beta() {
                 <noscript>
                   <p className="text-sm text-muted">Enable JavaScript to submit the form.</p>
                 </noscript>
-                <a href={APP_URL} className="text-center text-sm text-brand-400">
+                <a href={APP_SIGN_IN_URL} className="text-center text-sm text-brand-400">
                   Already have access? Sign in
                 </a>
               </form>
