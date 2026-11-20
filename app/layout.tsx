@@ -62,13 +62,13 @@ export const metadata: Metadata = {
     apple: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/apple-touch-icon.png`,
     icon: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-white-64.png?v=3`,
+        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-light-64.png?v=4`,
         type: "image/png",
         sizes: "64x64",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-black-64.png?v=3`,
+        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-dark-64.png?v=4`,
         type: "image/png",
         sizes: "64x64",
         media: "(prefers-color-scheme: dark)",
