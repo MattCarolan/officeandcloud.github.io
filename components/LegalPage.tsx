@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { Logo } from "./ui/Logo";
 
 export function LegalPage({
   title,
@@ -12,7 +13,7 @@ export function LegalPage({
     <main className="container-x py-12 sm:py-20">
       <article className="mx-auto max-w-3xl">
         <Link href="/" className="text-sm font-medium text-brand-400 hover:underline">
-          Office and Cloud home
+          <Logo />
         </Link>
         <h1 className="mb-8 mt-6 font-display text-4xl font-semibold text-ink sm:text-5xl">
           {title}
