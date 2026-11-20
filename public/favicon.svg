@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#0C0E16"/>
-  <path d="M12 11V8.5A1.5 1.5 0 0 1 13.5 7h5A1.5 1.5 0 0 1 20 8.5V11" fill="none" stroke="#B3A8FF" stroke-width="2"/>
-  <rect x="6" y="11" width="20" height="15" rx="3" fill="#8B7BFF"/>
-  <path d="M11 12v13m10-13v13" stroke="#40368A" stroke-width="2"/>
-  <path d="M14.5 15h3" stroke="#E7E3FF" stroke-width="1.6" stroke-linecap="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 264" role="img" aria-label="Office &amp; Cloud"><defs><linearGradient id="case" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7645DF"/><stop offset="1" stop-color="#6434CB"/></linearGradient><linearGradient id="cloud" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#009FBE"/><stop offset="1" stop-color="#008EA9"/></linearGradient></defs><g fill="url(#case)"><path d="M80 66V44C80 24 96 8 116 8H204C224 8 240 24 240 44V66H211V44C211 40 208 37 204 37H116C112 37 109 40 109 44V66Z"/><path d="M48 64H272C294 64 312 82 312 104V127C274 106 224 122 205 163C146 151 98 197 104 256H48C26 256 8 238 8 216V104C8 82 26 64 48 64Z"/></g><path d="M124 256C113 212 149 172 191 179L212 182C225 132 276 116 312 144V214C312 237 293 256 270 256Z" fill="url(#cloud)"/></svg>

@@ -59,16 +59,16 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
-    apple: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/apple-touch-icon.png`,
+    apple: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/apple-touch-icon.png?v=5-cloudcase`,
     icon: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-light-64.png?v=4`,
+        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-light-64.png?v=5-cloudcase`,
         type: "image/png",
         sizes: "64x64",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-dark-64.png?v=4`,
+        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/brand/icon-dark-64.png?v=5-cloudcase`,
         type: "image/png",
         sizes: "64x64",
         media: "(prefers-color-scheme: dark)",
