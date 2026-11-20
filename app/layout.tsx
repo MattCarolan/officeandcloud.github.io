@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/favicon.svg`,
+        url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/favicon.svg?v=2`,
         type: "image/svg+xml",
       },
     ],
