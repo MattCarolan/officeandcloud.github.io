@@ -29,7 +29,7 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header className="fixed inset-x-0 top-0 z-50 max-w-[100vw]">
       <div
         className={clsx(
           "transition-all duration-300",

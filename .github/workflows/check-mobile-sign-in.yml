@@ -45,7 +45,13 @@ jobs:
                   const signInBox = await signIn.boundingBox();
                   const homeBox = await nav.getByRole('link', { name: 'OfficeAndCloud home', exact: true }).boundingBox();
                   assert(homeBox && signInBox && homeBox.x + homeBox.width <= signInBox.x, 'Logo overlaps Sign in');
-                  assert(signInBox.x >= 0 && signInBox.x + signInBox.width <= width, 'Sign in is outside the viewport');
+                  const view = await page.evaluate(() => ({
+                    layout: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth,
+                    inner: innerWidth, visual: visualViewport.width, scale: visualViewport.scale,
+                    nav: document.querySelector('header nav').getBoundingClientRect().width,
+                  }));
+                  assert(signInBox.x >= 0 && signInBox.x + signInBox.width <= width,
+                    'Sign in is outside the viewport: ' + JSON.stringify({ width, view, signInBox, homeBox }));
                   if (mobile) {
                     assert(signInBox.height >= 44, 'Mobile sign-in tap target is smaller than 44px');
                     const menu = nav.getByRole('button', { name: 'Open menu', exact: true });
