@@ -38,8 +38,8 @@ export function Nav() {
             : "border-b border-transparent",
         )}
       >
-        <nav className="container-x flex h-16 items-center justify-between">
-          <Link href="#top" aria-label="OfficeAndCloud home">
+        <nav className="container-x flex h-16 items-center justify-between gap-2 lg:gap-0">
+          <Link href="#top" className="min-w-0" aria-label="OfficeAndCloud home">
             <Logo />
           </Link>
 
@@ -55,26 +55,30 @@ export function Nav() {
             ))}
           </div>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="flex shrink-0 items-center gap-2 lg:gap-3">
             <Link
               href={APP_SIGN_IN_URL}
-              className="text-sm text-muted transition-colors hover:text-ink"
+              className="inline-flex min-h-11 items-center whitespace-nowrap rounded-md px-2 text-sm text-ink transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink lg:min-h-0 lg:px-0 lg:text-muted lg:hover:text-ink"
             >
               Sign in
             </Link>
-            <LinkButton href="#preview" size="md">
-              Request access
-            </LinkButton>
-          </div>
 
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-ink lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-          >
-            {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
+            <div className="hidden lg:block">
+              <LinkButton href="#preview" size="md">
+                Request access
+              </LinkButton>
+            </div>
+
+            <button
+              type="button"
+              className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/10 text-ink lg:hidden"
+              onClick={() => setOpen((v) => !v)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+            >
+              {open ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </nav>
       </div>
 
@@ -99,13 +103,6 @@ export function Nav() {
                     {l.label}
                   </Link>
                 ))}
-                <Link
-                  href={APP_SIGN_IN_URL}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-3 text-[15px] text-muted transition-colors hover:bg-white/5 hover:text-ink"
-                >
-                  Sign in
-                </Link>
               </div>
               <div className="mt-3 border-t border-white/[0.06] pt-3">
                 <LinkButton

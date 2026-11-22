@@ -1,0 +1,85 @@
+name: Check mobile sign-in before and after deployment
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/check-mobile-sign-in.yml']
+permissions:
+  contents: read
+jobs:
+  check:
+    if: github.head_ref == 'codex/mobile-sign-in-header' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci && npm run build
+      - name: Prepare responsive browser check
+        run: |
+          check="$RUNNER_TEMP/officecloud-nav"
+          mkdir -p "$check"
+          npm install --prefix "$check" --no-save --package-lock=false playwright@1.56.1
+          "$check/node_modules/.bin/playwright" install --with-deps chromium
+          cat > "$check/check.cjs" <<'CHECK'
+          const assert = require('node:assert/strict');
+          const { chromium } = require('playwright');
+          const url = process.argv[2];
+          const signInUrl = 'https://app.officeandcloud.com/?signin=1';
+          async function main() {
+            const browser = await chromium.launch();
+            try {
+              for (const width of [320, 390, 1024, 1280]) {
+                const mobile = width < 1024;
+                const page = await browser.newPage({ viewport: { width, height: 844 }, isMobile: mobile, hasTouch: mobile });
+                try {
+                  const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 8000 });
+                  assert.equal(response.status(), 200);
+                  const header = page.getByRole('banner');
+                  const nav = header.getByRole('navigation');
+                  const signIn = nav.getByRole('link', { name: 'Sign in', exact: true });
+                  await signIn.waitFor({ state: 'visible', timeout: 3000 });
+                  assert.equal(await signIn.getAttribute('href'), signInUrl);
+                  const signInBox = await signIn.boundingBox();
+                  const homeBox = await nav.getByRole('link', { name: 'OfficeAndCloud home', exact: true }).boundingBox();
+                  assert(homeBox && signInBox && homeBox.x + homeBox.width <= signInBox.x, 'Logo overlaps Sign in');
+                  assert(signInBox.x >= 0 && signInBox.x + signInBox.width <= width, 'Sign in is outside the viewport');
+                  if (mobile) {
+                    assert(signInBox.height >= 44, 'Mobile sign-in tap target is smaller than 44px');
+                    const menu = nav.getByRole('button', { name: 'Open menu', exact: true });
+                    const menuBox = await menu.boundingBox();
+                    assert(menuBox && signInBox.x + signInBox.width <= menuBox.x && menuBox.x + menuBox.width <= width, 'Menu overlaps or overflows');
+                    await menu.tap();
+                    const closeMenu = nav.getByRole('button', { name: 'Close menu', exact: true });
+                    await closeMenu.waitFor({ state: 'visible', timeout: 3000 });
+                    assert.equal(await closeMenu.getAttribute('aria-expanded'), 'true');
+                    assert(await signIn.isVisible(), 'Opening the menu hides Sign in');
+                    await closeMenu.tap();
+                    await page.route(signInUrl, route => route.fulfill({ body: 'Sign-in destination' }));
+                    await Promise.all([page.waitForURL(signInUrl, { timeout: 3000 }), signIn.tap()]);
+                  } else {
+                    assert(await nav.getByRole('link', { name: 'Request access', exact: true }).isVisible());
+                  }
+                  console.log('Verified sign-in at ' + width + 'px on ' + url);
+                } finally { await page.close(); }
+              }
+            } finally { await browser.close(); }
+          }
+          main().catch(error => { console.error(error.message); process.exitCode = 1; });
+          CHECK
+      - name: Verify responsive navigation on the static build
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory out &
+          server=$!
+          trap 'kill "$server"' EXIT
+          for i in {1..20}; do curl -fsS -o /dev/null http://127.0.0.1:4173/ && break; sleep 1; done
+          node "$RUNNER_TEMP/officecloud-nav/check.cjs" http://127.0.0.1:4173/
+      - name: Verify responsive navigation on the deployed site
+        run: |
+          for i in {1..30}; do
+            if node "$RUNNER_TEMP/officecloud-nav/check.cjs" https://officeandcloud.com/; then exit 0; fi
+            sleep 10
+          done
+          exit 1
