@@ -23,34 +23,29 @@ const recordedTotal = expenditure.reduce(
 
 const questions = [
   {
-    question: "What does HR and payroll mean for AI agents?",
+    question: "Which AI tools can I discover?",
     answer:
-      "It means oversight of the AI tools your people use: accountable human owners, policy boundaries, risk reviews, licences and budgets. Payroll refers to recorded AI spending and cost planning. Office & Cloud does not process employee salaries, tax filings or payments.",
+      "Discover supported AI apps on enrolled devices and register the AI agents and apps your teams use. Bring their purpose, accountable owner and review date together in one AI Registry.",
   },
   {
-    question: "Does Office & Cloud manage prompts or assign tasks?",
+    question: "How can I keep AI costs under control?",
     answer:
-      "No. Your people write prompts and do their work directly in their chosen AI tools. Office & Cloud does not write, route or execute prompts, assign work to AI agents, or act as their direct manager. It provides the HR and payroll layer around those tools: ownership, policies, risk reviews and visibility into AI costs.",
+      "Record AI expenses, review licences, estimate token costs and set budget alerts. See recorded spending by team in the expenditure dashboard and use that visibility to plan your AI budget.",
   },
   {
-    question: "What can I discover?",
+    question: "How can I set boundaries for AI use?",
     answer:
-      "Device agents detect supported AI apps on enrolled devices. You can also register known AI agents and apps directly, documenting their purpose, accountable human owner and review date. Discovery depends on the device platform and the apps it supports.",
+      "Apply website and AI app policies on supported devices. Give teams editable governance templates, assign accountable owners and use risk and impact assessments to guide your AI decisions.",
   },
   {
-    question: "What can I share?",
+    question: "What can I share with stakeholders?",
     answer:
-      "Export an editable policy template as a PDF, or generate a transparency report from an AI Registry record and its completed risk and impact assessment. The report brings the information you have recorded into a shareable document.",
+      "Export policy templates as PDFs and generate transparency reports from AI Registry records and completed risk and impact assessments. Give stakeholders a clear account of your AI use, ownership and governance.",
   },
   {
-    question: "Are AI agents and device agents the same thing?",
+    question: "How do I get started?",
     answer:
-      "No. AI agents and apps are the AI tools your organization uses. Office & Cloud device agents are software installed on enrolled computers to discover supported AI apps and apply supported device policies. They provide information and supported controls for AI oversight.",
-  },
-  {
-    question: "Do all device platforms have the same capabilities?",
-    answer:
-      "Capabilities vary by platform. Windows, macOS beta and Linux beta have different support for discovery, policy controls and device management. Review the capabilities shown for each platform in the application before deploying its device agent.",
+      "Request preview access, then start with an enrolled device or an AI use your team already knows about. Add an accountable owner and build out the policies, risk reviews and cost records around your AI workforce.",
   },
 ];
 

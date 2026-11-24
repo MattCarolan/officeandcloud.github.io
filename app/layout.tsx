@@ -26,7 +26,7 @@ const mono = localFont({
 const siteUrl = "https://officeandcloud.com";
 const title = "Office & Cloud | Your AI workforce. Managed like contractors.";
 const description =
-  "HR and payroll for your AI workforce: discover supported AI apps, manage ownership, policies and risk, and track AI expenses, licences and budgets. Prompts stay in your AI tools.";
+  "Bring your AI workforce into view. Discover supported AI apps, set clear policies, manage risk and take control of AI expenses, licences and budgets with Office & Cloud.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
