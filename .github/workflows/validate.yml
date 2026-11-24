@@ -1,0 +1,44 @@
+name: Validate production website
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install Chromium for rendering checks
+        run: npx playwright install --with-deps chromium
+      - name: Build the production static export
+        run: npm run build
+      - name: Check production pages, WebGL rendering and mocked preview submissions
+        run: npx playwright test
+      - name: Save screenshots, traces and the browser report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-rendering-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: warn

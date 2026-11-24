@@ -1,0 +1,90 @@
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  isolation: isolate;
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 6% -12% 4%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 38% 43%, rgb(140 94 249 / 10%), transparent 60%),
+    radial-gradient(ellipse at 70% 68%, rgb(0 188 222 / 6%), transparent 53%);
+}
+
+.canvasHost,
+.fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.canvasHost {
+  opacity: 0;
+  transition: opacity 650ms ease;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fallback {
+  opacity: 1;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+.fallbackSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.fallbackFloor,
+.fallbackRecord {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+
+.scene[data-motion="true"] .fallbackFloor {
+  transition: transform 800ms cubic-bezier(0.22, 0.7, 0, 1);
+}
+
+.scene[data-motion="true"] .fallbackRecord {
+  transition: transform 950ms cubic-bezier(0.22, 0.7, 0, 1);
+}
+
+.scene[data-motion="true"] .fallbackSelection {
+  transition: opacity 600ms ease;
+}
+
+.scene[data-motion="true"] .fallbackGlyph {
+  transition: stroke 600ms ease;
+}
+
+.scene[data-ready="true"] .canvasHost {
+  opacity: 1;
+}
+
+.scene[data-ready="true"] .fallback {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvasHost,
+  .fallback,
+  .scene[data-motion="true"] .fallbackFloor,
+  .scene[data-motion="true"] .fallbackRecord,
+  .scene[data-motion="true"] .fallbackSelection,
+  .scene[data-motion="true"] .fallbackGlyph {
+    transition: none;
+  }
+}

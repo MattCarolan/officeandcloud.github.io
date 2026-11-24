@@ -16,12 +16,16 @@ html {
 }
 
 body {
-  background-color: #07080d;
+  background-color: #080b18;
   color: #edeef4;
   overflow-x: hidden;
 }
 
 /* Selection */
+.skip-link { position: fixed; top: 8px; left: 16px; transform: translateY(-160%); z-index: 100; border-radius: 6px; background: #f5f4ff; color: #080b18; padding: 12px 18px; font-size: 16px; }
+.skip-link:focus { transform: translateY(0); }
+:focus-visible { outline: 2px solid #52dcef; outline-offset: 5px; }
+
 ::selection {
   background: rgba(109, 94, 246, 0.35);
   color: #fff;

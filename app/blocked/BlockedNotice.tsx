@@ -17,7 +17,7 @@ const notices = {
 export function BlockedNotice({ kind }: { kind: keyof typeof notices }) {
   const notice = notices[kind];
   return (
-    <main className="container-x grid min-h-screen max-w-[740px] content-center py-12">
+    <main id="main-content" className="container-x grid min-h-screen max-w-[740px] content-center py-12">
       <section className="glass-strong rounded-3xl px-6 py-8 shadow-2xl sm:px-10 sm:py-12" aria-labelledby="blocked-title">
         <Link href="/" className="inline-flex rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
           <Logo />
@@ -27,7 +27,7 @@ export function BlockedNotice({ kind }: { kind: keyof typeof notices }) {
         </h1>
         <p className="mt-4 text-base leading-relaxed text-ink">{notice.explanation}</p>
         <p className="mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-muted">
-          If you need an exception or think this was blocked by mistake, contact your organization's IT helpdesk. {notice.details}
+          If you need an exception or think this was blocked by mistake, contact your organization&apos;s IT helpdesk. {notice.details}
         </p>
       </section>
     </main>
