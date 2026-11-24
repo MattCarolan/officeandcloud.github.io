@@ -47,3 +47,5 @@ All sample records and spending values are labelled illustrative. The expenditur
 ## Release checks
 
 Verify all five states, keyboard selection, 320px/390px mobile layout, visible sign-in, no horizontal overflow, scene fallback, reduced motion and pause controls. Verify preview validation and success/failure using request interception. Build the static export and verify the deployed commit and custom domain. Performance work should preserve the clear static page before richer graphics load.
+
+Review captured **WebGL output as well as the SVG fallback**. The materials must read as dark architectural glass with purple/cyan edge light, every floor symbol must remain legible, and the full structure needs breathing room within the canvas. A passing render test is not a substitute for this visual review.

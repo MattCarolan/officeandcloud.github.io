@@ -7,7 +7,7 @@ import type {
   LineBasicMaterial,
   Material,
   Mesh,
-  MeshPhysicalMaterial,
+  ShaderMaterial,
   Texture,
   WebGLRenderer,
   WebGLRenderTarget,
@@ -201,7 +201,7 @@ function ArchitecturalFallback({ active, id }: { active: number; id: string }) {
 
 interface Floor {
   group: Group;
-  glass: MeshPhysicalMaterial;
+  glass: ShaderMaterial;
   edge: LineBasicMaterial;
   glyph: Group;
   hit: Mesh;
@@ -298,16 +298,16 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
       view.setClearColor(0x000000, 0);
       view.outputColorSpace = T.SRGBColorSpace;
       view.toneMapping = T.ACESFilmicToneMapping;
-      view.toneMappingExposure = 1.18;
+      view.toneMappingExposure = 1.03;
       view.transmissionResolutionScale = smallDevice() ? 0.45 : 0.65;
       view.domElement.setAttribute("aria-hidden", "true");
       view.domElement.className = styles.canvas;
       host.appendChild(view.domElement);
 
       const scene = new T.Scene();
-      const camera = new T.PerspectiveCamera(32, 1, 0.1, 60);
-      const lookAt = new T.Vector3(0.05, 0.25, 0.1);
-      const cameraDirection = new T.Vector3(0.58, 0.39, 0.72).normalize();
+      const camera = new T.PerspectiveCamera(34, 1, 0.1, 60);
+      const lookAt = new T.Vector3(0.05, 0.15, 0.14);
+      const cameraDirection = new T.Vector3(0.58, 0.3, 0.76).normalize();
       const baseCamera = new T.Vector3();
       const wantedCamera = new T.Vector3();
       const pointer = new T.Vector2();
@@ -318,21 +318,21 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
       const pmrem = new T.PMREMGenerator(view);
       environmentTarget = pmrem.fromScene(environment, 0.06);
       scene.environment = environmentTarget.texture;
-      scene.environmentIntensity = 0.8;
+      scene.environmentIntensity = 0.32;
       environment.dispose();
       pmrem.dispose();
 
-      scene.add(new T.HemisphereLight(0xc3d0ff, 0x090719, 1.15));
-      const key = new T.DirectionalLight(0xf0ebff, 3.6);
+      scene.add(new T.HemisphereLight(0xa9b8ee, 0x060511, 0.4));
+      const key = new T.DirectionalLight(0xdce8ff, 1.8);
       key.position.set(3, 7, 6);
       scene.add(key);
-      const back = new T.DirectionalLight(0x8c5ef9, 3.2);
+      const back = new T.DirectionalLight(0x8c5ef9, 1.6);
       back.position.set(-4, 3, -4);
       scene.add(back);
-      const cyanLight = new T.PointLight(0x00bcde, 25, 13, 2);
+      const cyanLight = new T.PointLight(0x00bcde, 10, 13, 2);
       cyanLight.position.set(3.6, 0.8, 3.6);
       scene.add(cyanLight);
-      const violetLight = new T.PointLight(0x8c5ef9, 28, 12, 2);
+      const violetLight = new T.PointLight(0x8c5ef9, 12, 12, 2);
       violetLight.position.set(-3.4, 2.6, 1);
       scene.add(violetLight);
 
@@ -341,45 +341,106 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
       scene.add(building);
       const violet = new T.Color("#8c5ef9");
       const cyan = new T.Color("#00bcde");
-      const glassViolet = new T.Color("#7772b9");
-      const glassCyan = new T.Color("#8bcedc");
       const titanium = rememberMaterial(
         new T.MeshStandardMaterial({
-          color: 0x10152b,
-          metalness: 0.84,
-          roughness: 0.24,
+          color: 0x090e1d,
+          metalness: 0.82,
+          roughness: 0.2,
         }),
       );
       const polishedViolet = rememberMaterial(
         new T.MeshStandardMaterial({
-          color: 0x976cf7,
-          metalness: 0.62,
-          roughness: 0.22,
-          emissive: 0x6634ce,
-          emissiveIntensity: 0.28,
+          color: 0x6630b9,
+          metalness: 0.48,
+          roughness: 0.2,
+          emissive: 0x8c5ef9,
+          emissiveIntensity: 0.32,
         }),
       );
       const polishedCyan = rememberMaterial(
         new T.MeshStandardMaterial({
-          color: 0x70dcf1,
-          metalness: 0.48,
+          color: 0x16acc8,
+          metalness: 0.38,
           roughness: 0.2,
           emissive: 0x00bcde,
-          emissiveIntensity: 0.38,
+          emissiveIntensity: 0.28,
         }),
       );
       const brightCyan = rememberMaterial(
-        new T.MeshBasicMaterial({ color: 0xa6efff }),
+        new T.MeshBasicMaterial({ color: 0x6ce4f6, toneMapped: false }),
       );
       const lightCyan = rememberMaterial(
         new T.MeshBasicMaterial({
           color: 0x00bcde,
           transparent: true,
-          opacity: 0.13,
+          opacity: 0.08,
           blending: T.AdditiveBlending,
           depthWrite: false,
+          toneMapped: false,
         }),
       );
+
+      // Transparent tinted glass with controlled reflection bands and a Fresnel rim.
+      // Unlike physical transmission over a solid backing, the inner area stays clear.
+      const makeGlass = (
+        tint: InstanceType<typeof T.Color>,
+        active: number,
+        vertical = false,
+      ) =>
+        rememberMaterial(
+          new T.ShaderMaterial({
+            transparent: true,
+            depthWrite: false,
+            side: T.FrontSide,
+            toneMapped: false,
+            uniforms: {
+              uTint: { value: tint.clone() },
+              uActive: { value: active },
+              uVertical: { value: vertical ? 1 : 0 },
+              uBodyOpacity: { value: vertical ? 0.09 : 0.12 },
+              uRimOpacity: { value: vertical ? 0.25 : 0.36 },
+            },
+            vertexShader: `
+            varying vec3 vGlassNormal;
+            varying vec3 vGlassView;
+            varying vec3 vGlassLocal;
+            void main() {
+              vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+              vGlassNormal = normalize(mat3(modelMatrix) * normal);
+              vGlassView = cameraPosition - worldPosition.xyz;
+              vGlassLocal = position;
+              gl_Position = projectionMatrix * viewMatrix * worldPosition;
+            }
+          `,
+            fragmentShader: `
+            uniform vec3 uTint;
+            uniform float uActive;
+            uniform float uVertical;
+            uniform float uBodyOpacity;
+            uniform float uRimOpacity;
+            varying vec3 vGlassNormal;
+            varying vec3 vGlassView;
+            varying vec3 vGlassLocal;
+            void main() {
+              vec3 normalDirection = normalize(vGlassNormal);
+              vec3 viewDirection = normalize(vGlassView);
+              float fresnel = pow(1.0 - clamp(abs(dot(normalDirection, viewDirection)), 0.0, 1.0), 2.2);
+              vec2 surfacePosition = mix(vGlassLocal.xz, vGlassLocal.xy, uVertical);
+              float broadReflection = 1.0 - smoothstep(0.0, 0.13,
+                abs(surfacePosition.x + surfacePosition.y * 0.45 - 0.65));
+              float fineReflection = 1.0 - smoothstep(0.0, 0.028,
+                abs(surfacePosition.x - surfacePosition.y * 0.22 + 0.45));
+              float reflection = broadReflection * 0.6 + fineReflection * 0.4;
+              vec3 glassColor = vec3(0.004, 0.006, 0.018)
+                + uTint * (0.14 + fresnel * 0.85 + reflection * 0.12)
+                * (1.0 + uActive * 0.25);
+              float glassAlpha = uBodyOpacity + fresnel * uRimOpacity + reflection * 0.025;
+              gl_FragColor = vec4(glassColor, clamp(glassAlpha, 0.0, 0.7));
+              #include <colorspace_fragment>
+            }
+          `,
+          }),
+        );
 
       const roundedRectangle = (
         width: number,
@@ -421,6 +482,21 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
       const plateEdges = rememberGeometry(
         new T.EdgesGeometry(plateGeometry, 24),
       );
+      const frameShape = roundedRectangle(3.3, 2.12, 0.055);
+      frameShape.holes.push(roundedRectangle(3.23, 2.05, 0.035));
+      const frameGeometry = rememberGeometry(
+        new T.ExtrudeGeometry(frameShape, {
+          depth: 0.022,
+          bevelEnabled: true,
+          bevelThickness: 0.007,
+          bevelSize: 0.007,
+          bevelSegments: 1,
+          curveSegments: 4,
+          steps: 1,
+        }),
+      );
+      frameGeometry.rotateX(-Math.PI / 2);
+      frameGeometry.center();
       const cylinderGeometry = rememberGeometry(
         new T.CylinderGeometry(1, 1, 1, 12),
       );
@@ -478,9 +554,9 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
 
       const makeGlyph = (index: number) => {
         const glyph = new T.Group();
-        glyph.position.set(-0.55, 0.17, 0.24);
+        glyph.position.set(-0.65, 0.13, 1.17);
         glyph.rotation.y = 0.55;
-        glyph.scale.setScalar(0.83);
+        glyph.scale.setScalar(0.73);
         if (index === 0) {
           const nodes = [
             [-0.29, 0.2, 0],
@@ -521,6 +597,15 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
           shield.quadraticCurveTo(-0.2, 0.04, -0.27, 0.25);
           shield.lineTo(-0.3, 0.6);
           shield.closePath();
+          const shieldOpening = new T.Path();
+          shieldOpening.moveTo(0, 0.61);
+          shieldOpening.lineTo(0.21, 0.53);
+          shieldOpening.lineTo(0.18, 0.27);
+          shieldOpening.quadraticCurveTo(0.13, 0.12, 0, 0.055);
+          shieldOpening.quadraticCurveTo(-0.13, 0.12, -0.18, 0.27);
+          shieldOpening.lineTo(-0.21, 0.53);
+          shieldOpening.closePath();
+          shield.holes.push(shieldOpening);
           const shieldGeometry = rememberGeometry(
             new T.ExtrudeGeometry(shield, {
               depth: 0.055,
@@ -600,35 +685,19 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
           baseY,
           baseZ + emphasis * 1.05,
         );
-        const glass = rememberMaterial(
-          new T.MeshPhysicalMaterial({
-            color: glassViolet.clone().lerp(glassCyan, emphasis * 0.65),
-            roughness: 0.15,
-            metalness: 0.1,
-            transmission: smallDevice() ? 0.35 : 0.55,
-            thickness: 0.2,
-            ior: 1.45,
-            clearcoat: 1,
-            clearcoatRoughness: 0.14,
-            attenuationColor: new T.Color(0x9e7bdf),
-            attenuationDistance: 2.1,
-            emissive: violet.clone().lerp(cyan, emphasis),
-            emissiveIntensity: 0.035 + emphasis * 0.09,
-            envMapIntensity: 0.95,
-          }),
-        );
+        const glass = makeGlass(violet.clone().lerp(cyan, emphasis), emphasis);
         const hit = new T.Mesh(plateGeometry, glass);
         hit.userData.pillar = index;
         group.add(hit);
-        const undercut = new T.Mesh(plateGeometry, titanium);
-        undercut.scale.set(0.998, 0.29, 0.998);
+        const undercut = new T.Mesh(frameGeometry, titanium);
         undercut.position.y = -0.064;
         group.add(undercut);
         const edge = rememberMaterial(
           new T.LineBasicMaterial({
             color: violet.clone().lerp(cyan, emphasis),
             transparent: true,
-            opacity: 0.42 + emphasis * 0.5,
+            opacity: 0.48 + emphasis * 0.45,
+            toneMapped: false,
           }),
         );
         const outline = new T.LineSegments(plateEdges, edge);
@@ -647,9 +716,10 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
           insetGeometry,
           rememberMaterial(
             new T.LineBasicMaterial({
-              color: 0x9990c7,
+              color: 0x9b70df,
               transparent: true,
-              opacity: 0.22,
+              opacity: 0.2,
+              toneMapped: false,
             }),
           ),
         );
@@ -672,16 +742,16 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
 
       // One continuous spine and one persistent document module connect all five decisions.
       const spine = new T.Group();
-      spine.position.set(-0.86, 0.2, -0.72);
-      rod(spine, [0, -2.55, 0], [0, 2.66, 0], 0.018, brightCyan);
-      rod(spine, [0, -2.55, 0], [0, 2.66, 0], 0.075, lightCyan);
+      spine.position.set(-0.86, 0, -0.72);
+      rod(spine, [0, -2.14, 0], [0, 2.12, 0], 0.009, brightCyan);
+      rod(spine, [0, -2.14, 0], [0, 2.12, 0], 0.05, lightCyan);
       building.add(spine);
       const pillarGeometry = rememberGeometry(
-        new T.BoxGeometry(0.055, 4.85, 0.055),
+        new T.BoxGeometry(0.028, 4.06, 0.028),
       );
       [-1.32, 1.3].forEach((x) => {
         const support = new T.Mesh(pillarGeometry, titanium);
-        support.position.set(x, 0.15, -0.87);
+        support.position.set(x, 0, -0.87);
         building.add(support);
       });
 
@@ -691,25 +761,13 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
         new T.BoxGeometry(0.58, 0.64, 0.025),
       );
       const recordEdges = rememberGeometry(new T.EdgesGeometry(recordGeometry));
-      const recordGlass = rememberMaterial(
-        new T.MeshPhysicalMaterial({
-          color: 0x8eeafa,
-          roughness: 0.13,
-          metalness: 0.08,
-          transmission: 0.6,
-          thickness: 0.08,
-          ior: 1.4,
-          emissive: 0x00bcde,
-          emissiveIntensity: 0.13,
-          clearcoat: 1,
-          envMapIntensity: 1.2,
-        }),
-      );
+      const recordGlass = makeGlass(cyan, 1, true);
       const recordEdge = rememberMaterial(
         new T.LineBasicMaterial({
-          color: 0xb1f5ff,
+          color: 0x80eaff,
           transparent: true,
-          opacity: 0.8,
+          opacity: 0.83,
+          toneMapped: false,
         }),
       );
       for (let index = 0; index < 4; index++) {
@@ -721,9 +779,9 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
       }
       const startingFloor = floors[startIndex];
       record.position.set(
-        startingFloor.group.position.x + 0.56,
-        startingFloor.baseY + 0.49,
-        startingFloor.group.position.z + 0.31,
+        startingFloor.group.position.x + 0.48,
+        startingFloor.baseY + 0.42,
+        startingFloor.group.position.z + 0.9,
       );
       building.add(record);
       const wantedRecord = new T.Vector3();
@@ -775,15 +833,23 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
         baseGlow.position.set(-0.6, -2.3, -0.5);
         baseGlow.scale.set(3.1, 0.9, 1);
         scene.add(baseGlow);
+        const shadow = new T.Mesh(
+          rememberGeometry(new T.PlaneGeometry(5, 3.8)),
+          rememberMaterial(
+            new T.MeshBasicMaterial({
+              map: glowTexture,
+              color: 0x000000,
+              transparent: true,
+              opacity: 0.5,
+              depthWrite: false,
+              toneMapped: false,
+            }),
+          ),
+        );
+        shadow.rotation.x = -Math.PI / 2;
+        shadow.position.set(0, -2.22, 0.2);
+        building.add(shadow);
       }
-
-      const plinth = new T.Mesh(
-        rememberGeometry(new T.CylinderGeometry(2.12, 2.2, 0.055, 64)),
-        titanium,
-      );
-      plinth.position.y = -2.28;
-      plinth.scale.z = 0.7;
-      building.add(plinth);
 
       function scheduleFrame() {
         if (
@@ -819,20 +885,19 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
           unsettled ||= Math.abs(target - floor.emphasis) > 0.0005;
           floor.group.position.x = floor.baseX + floor.emphasis * 0.3;
           floor.group.position.z = floor.baseZ + floor.emphasis * 1.05;
-          floor.glass.color
-            .copy(glassViolet)
-            .lerp(glassCyan, floor.emphasis * 0.65);
-          floor.glass.emissive.copy(violet).lerp(cyan, floor.emphasis);
-          floor.glass.emissiveIntensity = 0.035 + floor.emphasis * 0.09;
+          floor.glass.uniforms.uTint.value
+            .copy(violet)
+            .lerp(cyan, floor.emphasis);
+          floor.glass.uniforms.uActive.value = floor.emphasis;
           floor.edge.color.copy(violet).lerp(cyan, floor.emphasis);
-          floor.edge.opacity = 0.42 + floor.emphasis * 0.5;
-          floor.glyph.scale.setScalar(0.8 + floor.emphasis * 0.09);
+          floor.edge.opacity = 0.48 + floor.emphasis * 0.45;
+          floor.glyph.scale.setScalar(0.7 + floor.emphasis * 0.08);
         });
         const activeFloor = floors[active];
         wantedRecord.set(
-          activeFloor.group.position.x + 0.56,
-          activeFloor.baseY + 0.49,
-          activeFloor.group.position.z + 0.31,
+          activeFloor.group.position.x + 0.48,
+          activeFloor.baseY + 0.42,
+          activeFloor.group.position.z + 0.9,
         );
         record.position.lerp(wantedRecord, smoothing);
         if (record.position.distanceToSquared(wantedRecord) < 0.000001)
@@ -841,9 +906,9 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
 
         connectorA.set(-0.86, activeFloor.baseY + 0.085, -0.72);
         connectorB.set(
-          activeFloor.group.position.x + 0.55,
+          activeFloor.group.position.x + 0.48,
           activeFloor.baseY + 0.085,
-          activeFloor.group.position.z + 0.3,
+          activeFloor.group.position.z + 0.9,
         );
         delta.subVectors(connectorB, connectorA);
         connector.position.copy(connectorA).add(connectorB).multiplyScalar(0.5);
@@ -876,7 +941,7 @@ export default function HeadquartersScene(props: HeadquartersSceneProps) {
         view.setSize(width, height, false);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-        const distance = Math.max(10.6, 7.3 / camera.aspect);
+        const distance = Math.max(11.4, 7.9 / camera.aspect);
         baseCamera.copy(cameraDirection).multiplyScalar(distance).add(lookAt);
         camera.position.copy(baseCamera);
         camera.lookAt(lookAt);

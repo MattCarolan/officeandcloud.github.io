@@ -345,6 +345,19 @@
     font-size: 14px;
   }
 }
+@media (max-width: 380px) {
+  .submit {
+    justify-content: center;
+    gap: 0;
+    padding-inline: 12px;
+  }
+  .submit > span {
+    white-space: nowrap;
+  }
+  .submit > svg {
+    display: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .spinner {
     animation: none;

@@ -92,6 +92,15 @@ async function screenshot(
   name: string,
   fullPage = false,
 ) {
+  if (fullPage) {
+    await page.evaluate(() => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    });
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  }
   const path = info.outputPath(`${name}.png`);
   await page.screenshot({ path, fullPage, animations: "disabled" });
   await info.attach(name, { path, contentType: "image/png" });
@@ -280,10 +289,9 @@ test("motion can be paused, persists, and respects reduced motion", async ({
   await page
     .getByRole("button", { name: "Pause scene motion", exact: true })
     .click();
-  await expect(page.locator("[data-motion]")).toHaveAttribute(
-    "data-motion",
-    "off",
-  );
+  await expect(
+    page.locator('[data-motion="on"], [data-motion="off"]'),
+  ).toHaveAttribute("data-motion", "off");
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Play scene motion", exact: true }),
@@ -291,10 +299,9 @@ test("motion can be paused, persists, and respects reduced motion", async ({
   await page
     .getByRole("button", { name: "Play scene motion", exact: true })
     .click();
-  await expect(page.locator("[data-motion]")).toHaveAttribute(
-    "data-motion",
-    "on",
-  );
+  await expect(
+    page.locator('[data-motion="on"], [data-motion="off"]'),
+  ).toHaveAttribute("data-motion", "on");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(
     page.getByRole("button", {
@@ -302,10 +309,9 @@ test("motion can be paused, persists, and respects reduced motion", async ({
       exact: true,
     }),
   ).toBeDisabled();
-  await expect(page.locator("[data-motion]")).toHaveAttribute(
-    "data-motion",
-    "off",
-  );
+  await expect(
+    page.locator('[data-motion="on"], [data-motion="off"]'),
+  ).toHaveAttribute("data-motion", "off");
   await page.locator("#pillar-governance").click();
   await expect(
     page.locator("#pillar-evidence").getByRole("heading"),
@@ -533,6 +539,10 @@ test("the WebGL headquarters actually renders and changes when a pillar is selec
     const path = info.outputPath("headquarters-webgl.png");
     await scene.screenshot({ path, animations: "disabled" });
     await info.attach("headquarters-webgl", { path, contentType: "image/png" });
+    expect(
+      consoleErrors,
+      "The scene must render without shader or runtime errors",
+    ).toEqual([]);
   } finally {
     const renderer = await page.evaluate(() => {
       const sceneElement = document.querySelector('[role="img"][data-ready]');
