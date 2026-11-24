@@ -67,7 +67,7 @@ const pillars = [
       ["AI app policy", "Restricted apps"],
     ],
     detail:
-      "Device policies and governance documents serve different purposes. Device controls depend on the operating system; policy templates document the rules your people follow.",
+      "Give teams a clear standard for AI use. Combine website and app policies on supported devices with editable governance templates to put those standards into practice.",
   },
   {
     id: "risk-security",
@@ -84,7 +84,7 @@ const pillars = [
       ["Transparency report", "Available"],
     ],
     detail:
-      "A risk tier is a starting point for a decision. Keep the assessment, accountable owner and supporting record together so that the reasoning can be reviewed.",
+      "Bring risk assessments, accountable ownership and supporting evidence together so reviewers can understand the risks and make confident decisions.",
   },
   {
     id: "ai-economics",
@@ -101,7 +101,7 @@ const pillars = [
       ["Scope", "Recorded team expenditure"],
     ],
     detail:
-      "The payroll side of AI oversight covers subscriptions, licences and usage expenses. This example shows recorded Customer Success team spending; token estimates help with cost planning.",
+      "See where AI spending goes across your teams. Review subscriptions, licences and recorded usage expenses, and use token estimates to plan future costs.",
   },
   {
     id: "performance-value",
@@ -111,14 +111,14 @@ const pillars = [
     heading: "Review continued use.",
     evidence: "My Digital Workforce",
     description:
-      "Find ownership gaps and upcoming reviews. Bring recorded costs, risk assessments and human judgment to decisions about continued use.",
+      "Find ownership gaps and upcoming reviews. Use recorded costs and risk assessments to make informed decisions about continued use.",
     fields: [
       ["Next review", "4 Dec"],
       ["Human owner", "Assigned"],
       ["Review focus", "Evidence for continued use"],
     ],
     detail:
-      "Keep, change or stop using an AI agent based on a human review. Ownership, risk and recorded costs inform that decision without pretending to be an automatic ROI score.",
+      "Use ownership, risk and cost evidence to decide where AI adds value and which uses deserve continued investment.",
   },
 ] as const;
 
@@ -314,9 +314,9 @@ export function HeadquartersExperience() {
                 <span className={styles.heroAccent}>contractors.</span>
               </h1>
               <p className={styles.heroDescription}>
-                Know which AI agents are in use, set clear policy boundaries
-                and keep their costs in check. Prompts and day-to-day work stay
-                in your AI tools.
+                Know which AI agents are in use, set clear policy boundaries and
+                keep costs under control. Bring ownership, risk and spending
+                together in one place.
               </p>
               <div className={styles.heroActions}>
                 <a className={styles.button} href="#preview">
