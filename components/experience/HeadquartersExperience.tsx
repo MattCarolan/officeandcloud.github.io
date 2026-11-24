@@ -427,7 +427,7 @@ export function HeadquartersExperience() {
           id="platform"
           aria-labelledby="platform-heading"
         >
-          {pillars.map((item) => (
+          {compactViewport !== true && pillars.map((item) => (
             <span
               key={item.id}
               id={item.id}
@@ -620,6 +620,14 @@ export function HeadquartersExperience() {
           )}
           {compactViewport !== false && (
             <div className={styles.mobileExplorer} ref={compactRef}>
+              {compactViewport === true && pillars.map((item) => (
+                <span
+                  key={item.id}
+                  id={item.id}
+                  className={styles.pillarAnchor}
+                  aria-hidden="true"
+                />
+              ))}
               <MobilePillarExplorer
                 pillars={pillars}
                 activeIndex={activePillar}

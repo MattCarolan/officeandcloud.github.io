@@ -95,7 +95,7 @@ export function MobilePillarExplorer({
       ) {
         root.scrollIntoView({
           block: "start",
-          behavior: reducedMotion ? "auto" : "smooth",
+          behavior: reducedMotion ? "instant" : "smooth",
         });
       }
     });

@@ -387,6 +387,10 @@
 }
 .mobileExplorer {
   display: none;
+  position: relative;
+  scroll-margin-top: 82px;
+}
+.mobileExplorer .pillarAnchor {
   scroll-margin-top: 82px;
 }
 .pillarNavigation {
