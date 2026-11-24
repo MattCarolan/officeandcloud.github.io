@@ -294,6 +294,20 @@ test("renders the production page, preserves mobile sign-in, and captures the de
     )
     .toBeGreaterThan(0);
   await page.evaluate(() => document.fonts.ready.then(() => true));
+  await expect(
+    page.getByRole("link", { name: "Explore the five pillars", exact: true }),
+  ).toHaveCount(0);
+  await expect
+    .poll(() =>
+      heroImage.evaluate((image) => {
+        const header = document.querySelector("header");
+        return header
+          ? header.getBoundingClientRect().bottom -
+              image.getBoundingClientRect().top
+          : -1;
+      }),
+    )
+    .toBeGreaterThanOrEqual(24);
   await expect(page.locator("#platform-heading")).toHaveText(
     /One AI workforce\.\s*Five layers of oversight\./,
   );
@@ -334,6 +348,12 @@ test("renders the production page, preserves mobile sign-in, and captures the de
   await expect(signIn).toBeVisible();
   await expect(signIn).toBeInViewport();
   await expect(signIn).toHaveAttribute("href", signInURL);
+  // The projecting artwork must never intercept the navigation controls.
+  await signIn.click({ trial: true });
+  await page
+    .getByRole("navigation", { name: "Main navigation", exact: true })
+    .getByRole("link", { name: "Office & Cloud home", exact: true })
+    .click({ trial: true });
   await expectNoHorizontalOverflow(page);
   await screenshot(page, info, "hero");
 
@@ -344,10 +364,12 @@ test("renders the production page, preserves mobile sign-in, and captures the de
       exact: true,
     });
     await expect(mobileNav).toBeVisible();
+    await expect(page.locator("header")).toHaveAttribute("data-solid", "true");
     await expect(signIn).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await page.keyboard.press("Escape");
     await expect(mobileNav).toHaveCount(0);
+    await expect(page.locator("header")).toHaveAttribute("data-solid", "false");
     await expect(
       page.getByRole("button", { name: "Open menu", exact: true }),
     ).toBeFocused();
@@ -356,6 +378,8 @@ test("renders the production page, preserves mobile sign-in, and captures the de
   await page
     .getByRole("link", { name: "Explore the platform", exact: true })
     .click();
+  await expect(page.locator("header")).toHaveAttribute("data-solid", "true");
+  await signIn.click({ trial: true });
   if (usesMobileExplorer(page)) {
     const explorer = page.locator("[data-mobile-explorer]");
     await explorer.scrollIntoViewIfNeeded();

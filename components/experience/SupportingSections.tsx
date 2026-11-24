@@ -19,7 +19,7 @@ const questions = [
   {
     question: "Which AI tools can I discover?",
     answer:
-      "Discover supported AI apps on enrolled devices and register the AI agents and apps your teams use. Bring their purpose, accountable owner and review date together in one AI Registry.",
+      "Discovery is always working for you on the agents you deploy to managed machines. New AI tools are coming out all the time and we keep our indexer constantly up to date in order to discover all types of AI, even embedded and shadow AI",
   },
   {
     question: "How can I keep AI costs under control?",
