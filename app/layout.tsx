@@ -24,39 +24,48 @@ const mono = localFont({
 });
 
 const siteUrl = "https://officeandcloud.com";
-const title = "OfficeAndCloud — The control plane for your digital workforce";
+const title = "Office & Cloud | Your AI workforce. Managed like contractors.";
 const description =
-  "Deploy, govern, monitor and secure AI employees anywhere — local, on-prem, AWS, Azure, GCP or hybrid. Bring your own models, infrastructure and agents.";
+  "Discover supported AI apps, register AI agents and use cases, and manage human ownership, policies, risk, recorded spend and reviews across five pillars.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: title,
-    template: "%s — OfficeAndCloud",
+    template: "%s | Office & Cloud",
   },
   description,
   keywords: [
     "AI workforce management",
     "AI agent governance",
-    "AI control plane",
-    "AI employees",
-    "agent observability",
+    "AI registry",
+    "AI economics",
+    "AI risk assessment",
     "enterprise AI",
     "AI guardrails",
     "AI audit logs",
   ],
-  authors: [{ name: "OfficeAndCloud" }],
+  authors: [{ name: "Office & Cloud" }],
   openGraph: {
     type: "website",
     url: siteUrl,
-    siteName: "OfficeAndCloud",
+    siteName: "Office & Cloud",
     title,
     description,
+    images: [
+      {
+        url: "/images/ai-headquarters.webp",
+        width: 1536,
+        height: 1024,
+        alt: "Office & Cloud AI headquarters",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
+    images: ["/images/ai-headquarters.webp"],
   },
   robots: { index: true, follow: true },
   icons: {
@@ -79,7 +88,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07080D",
+  themeColor: "#080B18",
   width: "device-width",
   initialScale: 1,
 };
@@ -95,16 +104,9 @@ export default function RootLayout({
       className={`${display.variable} ${sans.variable} ${mono.variable}`}
     >
       <body className="font-sans antialiased">
-        {/* Ambient background layers */}
-        <div
-          aria-hidden
-          className="pointer-events-none fixed inset-0 -z-10 bg-base"
-        >
-          <div className="absolute inset-0 bg-grid mask-fade-b opacity-60" />
-          <div className="absolute left-1/2 top-[-12%] h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-[140px]" />
-          <div className="absolute right-[-10%] top-[30%] h-[420px] w-[520px] rounded-full bg-accent-500/10 blur-[150px]" />
-          <div className="absolute bottom-[-10%] left-[-5%] h-[420px] w-[520px] rounded-full bg-brand-700/10 blur-[150px]" />
-        </div>
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>

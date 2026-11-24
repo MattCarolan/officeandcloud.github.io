@@ -1,149 +1,146 @@
-# OfficeAndCloud — marketing site
+# Office & Cloud marketing site
 
-The launch and early-access marketing site for **OfficeAndCloud**, the control
-plane for the world's digital workforce: a single platform to deploy, govern,
-monitor, secure and audit AI employees — wherever they run (local, on-prem, AWS,
-Azure, GCP, Kubernetes, Docker, private and hybrid cloud).
+The public website for **Office & Cloud**, hosted at [officeandcloud.com](https://officeandcloud.com/).
 
-> **Don't manage AI. Manage your digital workforce.**
+**Your AI workforce. Managed like contractors.**
 
-This is a production-style, fully responsive, dark-mode marketing site built to a
-Linear / Vercel / Stripe quality bar. All product imagery is rendered with
-HTML/CSS/SVG — there are no bitmap screenshots or stock photos.
+The site explains how organizations can give AI software agents a defined purpose, a human owner and a review date, with policies, risk and recorded spend informing their decisions. The interactive headquarters follows one illustrative AI use, **Document summaries**, through five pillars:
 
----
+| Pillar | Question |
+| --- | --- |
+| Discovery | Which AI agents and apps are in use? |
+| Governance | Which policies apply? |
+| Risk & Security | What risks does each AI use introduce? |
+| AI Economics | What is our AI usage costing us? |
+| Performance & Value | Which AI agents should we keep using? |
 
-## Stack
+The approved visual direction and product boundaries are preserved in [the headquarters design brief](docs/HEADQUARTERS-DESIGN.md). Read it before changing the experience or marketing claims. Example records and expenditure are labelled illustrative; they do not represent live agent telemetry or automated ROI measurements.
 
-- **Next.js 14** (App Router) + **React 18**
-- **TypeScript**
-- **Tailwind CSS** (custom design tokens)
-- **Framer Motion** (scroll reveals, the animated control-plane visual, interactive guardrails)
-- **lucide-react** for iconography
-- Self-hosted Google fonts via `next/font` — Space Grotesk (display), Inter (body), JetBrains Mono (data/telemetry)
+## Stack and architecture
 
-No external state, CSS, or UI libraries beyond the above.
+- **Next.js 14**, App Router, **React 18** and **TypeScript**.
+- A **fully static export** for GitHub Pages, with no Next.js application server required in production.
+- **CSS Modules** for the headquarters experience and **Tailwind CSS** for shared and existing pages.
+- **Three.js** for one progressively loaded interactive architectural scene.
+- **lucide-react** for interface iconography. Framer Motion remains available to existing components.
+- Local fonts through `next/font/local`: Space Grotesk, Inter and JetBrains Mono, with font licences in `app/fonts/`.
+- Locally served purple/cyan brand assets and optimized desktop/mobile WebP hero artwork.
 
----
+The homepage is composed by `HeadquartersExperience`. Its primary content and controls are HTML. The scene supports the same content rather than becoming the only way to access it.
 
-## Getting started
+### One 3D scene, with a useful fallback
+
+The opening hero uses an optimized image with gentle pointer depth. The interactive five-floor headquarters receives the real-time 3D budget. Selecting a pillar brings its architectural floor forward and updates the evidence for the same AI use.
+
+Scene loading is deferred until the platform approaches the viewport. Rendering is driven by interactions and stops when the scene settles, leaves the viewport or the document is hidden. A visible motion control and the operating system's reduced-motion preference disable animated movement while keeping pillar selection available.
+
+An SVG architectural fallback remains available while the scene loads and if WebGL initialization fails or the context is lost. Native pillar buttons and HTML evidence work independently of the canvas, including through touch and keyboard input. The five pillar hashes can link directly to the relevant state:
+
+`#discovery`, `#governance`, `#risk-security`, `#ai-economics`, `#performance-value`.
+
+## Local development
+
+Use **Node.js 20**, matching the deployment workflow.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Then open <http://localhost:3000>.
+Open <http://localhost:3000>. The development wrapper in `scripts/dev.mjs` passes server options to Next.js and also accepts preview hosts' `--host` and `--strictPort` conventions.
 
-### Other scripts
+### Build and checks
 
 ```bash
-npm run build   # production build
-npm run start   # serve the production build
-npm run lint    # next lint
+npm run lint
+npx tsc --noEmit
+npm run build
 ```
 
-> **Note:** this project uses the `@/*` path alias (configured in `tsconfig.json`),
-> so imports look like `@/components/Hero` and `@/lib/content`.
+The build writes the complete static website to `out/`. To preview that exported artifact:
 
----
+```bash
+npx serve out
+```
+
+Serve `out/` for production-export checks. The existing `npm run start` script invokes Next.js's server command and is not the preview command for this static-export configuration.
+
+Pull requests run `.github/workflows/validate.yml` against the exported site. The Playwright suite covers desktop and 320px/390px layouts, a real software-WebGL render, pillar navigation, motion preferences, legal routes and intercepted form responses. It uploads screenshots and a browser report for review. To run the same suite in a development environment with Chromium available:
+
+```bash
+npx playwright install chromium
+npm run build
+npx playwright test
+```
+
+The test server uses port 4173. Stop any other preview using that port first. Form tests fail closed and intercept the production API; they never create real applications.
+
+### Environment variables
+
+**No environment variables, `.env` file or API keys are required for this marketing site.** Public application URLs are defined in `lib/config.ts`. `NEXT_PUBLIC_BASE_PATH` is derived and exposed by `next.config.mjs`; it does not need a separate environment setting.
 
 ## Project structure
 
-```
+```text
 app/
-  layout.tsx        # fonts, SEO metadata, ambient background, <html> shell
-  page.tsx          # composes every section in order
-  globals.css       # Tailwind layers + design-system utilities
-  sitemap.ts        # SEO sitemap
-  robots.ts         # SEO robots
-components/
-  Nav, Hero, Manifesto, Shift, ProductMockups, Workforce,
-  Guardrails, Infrastructure, Security, Vision, Beta, FAQ, Footer
-  ControlPlaneViz.tsx   # the signature animated hero visual (SVG)
-  dashboard/Dashboard.tsx  # the fake product dashboard mockup
-  ui/                   # shared primitives (Button, Reveal, SectionHeading, …)
+  layout.tsx                 Local fonts, metadata and document shell
+  page.tsx                   Homepage composition
+  globals.css                Shared styles and reduced-motion rules
+  privacy/                   Existing Privacy Notice
+  terms/                     Existing Preview Terms
+  blocked/                   Existing device-policy notices
+  robots.ts, sitemap.ts      Search indexing metadata
+  fonts/                     Local font files and licences
+components/experience/
+  HeadquartersExperience.tsx Homepage, navigation, pillar state and evidence
+  HeadquartersScene.tsx      Three.js scene and SVG fallback
+  SupportingSections.tsx     Expenditure, report illustration, devices and FAQ
+  PreviewAccess.tsx          Real preview application form
+  *.module.css               Scoped experience styles
+components/ui/
+  Logo.tsx                   Shared brand rendering
 lib/
-  content.ts        # ALL copy + data (single source of truth)
-  config.ts         # AWS application endpoint and app sign-in URL
-  motion.ts         # shared Framer Motion variants
-  clsx.ts           # tiny className helper (no dependency)
+  config.ts                  Public application and sign-in endpoints
+public/
+  brand/                     Supplied brand assets
+  images/                    Optimized headquarters hero artwork
+  CNAME                      officeandcloud.com custom domain
+  .nojekyll                  Preserves _next assets on GitHub Pages
+docs/
+  HEADQUARTERS-DESIGN.md      Approved direction and production invariants
 ```
 
-All copy and structured data lives in **`lib/content.ts`** — edit there to change
-the workforce roster, FAQ, security pillars, infrastructure nodes, form options,
-footer links, etc.
+The homepage's pillar copy and illustrative evidence live in `HeadquartersExperience.tsx`; supporting content and FAQ live in `SupportingSections.tsx`. Existing legacy components and `lib/content.ts` are not the homepage's single source of copy. Imports use the `@/*` alias configured in `tsconfig.json`.
 
----
+## Preview applications and sign-in
 
-## The early-access signup form
+`components/experience/PreviewAccess.tsx` sends preview requests to the existing Office & Cloud application API on AWS:
 
-The form in `components/Beta.tsx` sends applications to the Office & Cloud API
-on AWS. The API stores the application and queues the acknowledgment email.
-Around 20 minutes after the acknowledgment, AWS sends a separate acceptance
-email with account setup instructions. Account setup and sign-in use the AWS
-app at `https://app.officeandcloud.com/`. Both URLs are in `lib/config.ts`.
+- **POST:** `https://api.officeandcloud.com/applications`
+- **Payload:** `name`, `email`, `organization`, `website`, `startedAt`
+- **Success condition:** a successful HTTP response with `accepted: true`
+- **Sign-in:** `https://app.officeandcloud.com/?signin=1`
 
----
+The form retains its required fields, native email validation, honeypot and mount timestamp. It prevents concurrent submissions, aborts its request on unmount and provides accessible success/error feedback. An accepted submission acknowledges receipt of the preview request; it does not grant access in the browser.
 
-## Deploying to GitHub Pages (free)
+The existing AWS service stores applications and handles acknowledgement and subsequent acceptance/account-setup emails. Account setup and sign-in remain in the AWS-hosted application at `https://app.officeandcloud.com/`. The static marketing site does not implement or change that workflow. Preserve `/privacy/`, `/terms/` and the endpoint definitions in `lib/config.ts`.
 
-This project is configured to deploy to GitHub Pages as a fully static site.
-`next.config.mjs` sets `output: "export"` (writes the site to `./out`) and a
-`basePath` matching your repo name, and `.github/workflows/deploy.yml` builds
-and publishes automatically.
+**Never test by submitting invented details to the real application endpoint.** Intercept requests in browser tests to verify the payload, duplicate-submission handling and success/failure states without creating applications or sending email.
 
-**Setup (one time):**
+## GitHub Pages deployment
 
-1. **Set your repo name.** Open `next.config.mjs` and set `repo` to your GitHub
-   repository name. The site will be served at
-   `https://<username>.github.io/<repo>/`.
-   - If you use a **custom domain**, or your repo is named
-     `<username>.github.io`, set `repo = ""` so there's no sub-path.
+`next.config.mjs` sets `output: "export"`, disables the server image optimizer and emits folder-style URLs with `trailingSlash: true`. The repository and custom domain are served from the root, so `repo` is deliberately empty and the production base path is empty.
 
-2. **Push to GitHub.** Create a repo and push this project to the `main` branch.
+The existing `.github/workflows/deploy.yml` runs on pushes to `main` and supports manual `workflow_dispatch`. It installs dependencies with `npm ci` on Node.js 20, runs the production build, uploads `out/` and deploys it through GitHub Pages. Its Pages concurrency group avoids cancelling an in-progress deployment.
 
-3. **Enable Pages via Actions.** In the repo, go to
-   **Settings → Pages → Build and deployment → Source** and choose
-   **GitHub Actions**.
+Repository Pages settings must use **GitHub Actions** as the build/deployment source. Keep `public/CNAME` set to `officeandcloud.com` and retain `public/.nojekyll`. The marketing redesign does not require changes to DNS, application infrastructure, permissions or email configuration. If the public hostname changes in the future, update the canonical URL, sitemap and robots metadata together.
 
-4. **Done.** Every push to `main` runs the workflow and publishes the site. You
-   can also trigger it manually from the **Actions** tab. The live URL appears
-   in the workflow's `deploy` step.
+## Release verification
 
-**Build it locally the same way the Action does:**
-
-```bash
-npm run build      # generates ./out
-npx serve out      # preview the static export (optional)
-```
-
-> Note: `npm run dev` always runs at `http://localhost:3000` with no sub-path,
-> so local development is unaffected by the `basePath`.
-
-### Notes & limitations on Pages
-
-- **The site is static.** AWS handles submissions and sends the emails.
-- **`.nojekyll`** is included (`public/.nojekyll`) so GitHub doesn't strip the
-  `_next/` asset folder.
-- Update `siteUrl` in `app/sitemap.ts`, `app/robots.ts` and `app/layout.tsx` to
-  your live URL so SEO metadata and the sitemap resolve correctly.
-
-## Design system
-
-- **Palette** — near-black bases (`#07080D` → `#11131D`), indigo brand
-  (`#6D5EF6`), cyan accent (`#2DD4E8`), and amber (`#F5B544`) reserved
-  exclusively for guardrails / approvals so "a human decision is needed" always
-  reads as the same colour.
-- **Typography** — Space Grotesk for display, Inter for body, and JetBrains Mono
-  for any data, telemetry or identifier (`@handles`, costs, locations). Mono-for-data
-  is the recurring structural device that makes the product feel instrumented.
-- **Motion** — restrained, intentional, and fully respectful of
-  `prefers-reduced-motion`; the animated control-plane visual and all reveals fall
-  back to static states when reduced motion is requested.
-- **Accessibility** — semantic landmarks, labelled form controls, an
-  ARIA-correct FAQ accordion, visible focus rings, and AA-minded contrast.
-
----
-
-_OfficeAndCloud is a fictional product; this site was built as a design/engineering showcase._
+- [ ] Lint, TypeScript and production static export pass; inspect the exported site rather than relying only on development mode.
+- [ ] All five pillar states, direct hash links, keyboard controls and evidence panels work.
+- [ ] Check desktop and 320px/390px layouts, visible mobile sign-in, focus styling and absence of horizontal overflow.
+- [ ] Verify delayed scene loading, WebGL fallback, reduced motion, the pause control and offscreen/hidden-tab rendering behavior.
+- [ ] Verify preview validation, exact payload and success/failure with **intercepted requests only**; make **no real test form submission**.
+- [ ] Confirm the custom domain, sign-in, privacy and terms links; no new environment variables are required.
+- [ ] Confirm that the successful Pages deployment contains the intended commit and that `https://officeandcloud.com/` serves that release.

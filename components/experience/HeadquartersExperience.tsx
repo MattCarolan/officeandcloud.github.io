@@ -1,0 +1,612 @@
+"use client";
+
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import {
+  Coins,
+  FileText,
+  Gauge,
+  Menu,
+  Pause,
+  Play,
+  ScanSearch,
+  ShieldCheck,
+  SlidersHorizontal,
+  X,
+} from "lucide-react";
+import { APP_SIGN_IN_URL } from "@/lib/config";
+import { Logo } from "@/components/ui/Logo";
+import { SupportingSections } from "./SupportingSections";
+import { PreviewAccess } from "./PreviewAccess";
+import styles from "./HeadquartersExperience.module.css";
+
+const HeadquartersScene = dynamic(() => import("./HeadquartersScene"), {
+  ssr: false,
+  loading: () => <ScenePlaceholder />,
+});
+const pillars = [
+  {
+    id: "discovery",
+    name: "Discovery",
+    icon: ScanSearch,
+    question: "Which AI agents and apps are in use?",
+    heading: "Know what AI is used for.",
+    evidence: "AI Registry",
+    description:
+      "Discover supported AI apps on enrolled devices. Document AI agents and use cases in the registry, with a clear purpose and a human owner.",
+    fields: [
+      ["Purpose", "Summarize internal documents"],
+      ["Registry", "AI use recorded"],
+      ["Next review", "4 Dec"],
+    ],
+    detail:
+      "Device discovery identifies supported installed AI apps. Your team adds the context: what the AI is used for, who is accountable, and when it should be reviewed.",
+  },
+  {
+    id: "governance",
+    name: "Governance",
+    icon: SlidersHorizontal,
+    question: "Which policies apply?",
+    heading: "Make the boundaries clear.",
+    evidence: "Policies",
+    description:
+      "Manage website and AI app policies on supported devices. Give your teams editable policy templates and a consistent starting point.",
+    fields: [
+      ["Device group", "Customer Success"],
+      ["Website policy", "Standard restrictions"],
+      ["AI app policy", "Restricted apps"],
+    ],
+    detail:
+      "Device policies and governance documents serve different purposes. Device controls depend on the operating system; policy templates document the rules your people follow.",
+  },
+  {
+    id: "risk-security",
+    name: "Risk & Security",
+    icon: ShieldCheck,
+    question: "What risks does each AI use introduce?",
+    heading: "Bring the evidence into view.",
+    evidence: "Risk & impact assessment",
+    description:
+      "Assess AI use cases, review Audit Trail activity and build transparency reports from the evidence in your registry and assessments.",
+    fields: [
+      ["Risk tier", "Medium"],
+      ["Assessment", "Complete"],
+      ["Transparency report", "Available"],
+    ],
+    detail:
+      "A risk tier is a starting point for a decision. Keep the assessment, accountable owner and supporting record together so that the reasoning can be reviewed.",
+  },
+  {
+    id: "ai-economics",
+    name: "AI Economics",
+    icon: Coins,
+    question: "What is our AI usage costing us?",
+    heading: "Make the cost visible.",
+    evidence: "Recorded team spend",
+    description:
+      "Record AI expenses, review licences, estimate token costs and set budget alerts. Understand the spend behind your AI decisions.",
+    fields: [
+      ["Team", "Customer Success"],
+      ["Source", "AI expense register"],
+      ["Scope", "Recorded team expenditure"],
+    ],
+    detail:
+      "This example is recorded team spend, not a live meter for this AI agent. Token estimates and recorded expenses are separate views of the economics.",
+  },
+  {
+    id: "performance-value",
+    name: "Performance & Value",
+    icon: Gauge,
+    question: "Which AI agents should we keep using?",
+    heading: "Keep the next decision in view.",
+    evidence: "My Digital Workforce",
+    description:
+      "Find ownership gaps and upcoming reviews. Use the evidence you have to decide whether an AI use still earns its place.",
+    fields: [
+      ["Next review", "4 Dec"],
+      ["Human owner", "Assigned"],
+      ["Review focus", "Evidence for continued use"],
+    ],
+    detail:
+      "Keep, change or stop using an AI agent based on a human review. Ownership, risk and recorded costs inform that decision without pretending to be an automatic ROI score.",
+  },
+] as const;
+
+function ScenePlaceholder() {
+  return (
+    <div className={styles.placeholder} aria-hidden="true">
+      <div className={styles.placeholderTower}>
+        {[0, 1, 2, 3, 4].map((i) => (
+          <span key={i} style={{ "--level": i } as CSSProperties} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function HeadquartersExperience() {
+  const [activePillar, setActivePillar] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(true);
+  const [motionEnabled, setMotionEnabled] = useState(false);
+  const [sceneStarted, setSceneStarted] = useState(false);
+  const [sceneReady, setSceneReady] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const platformRef = useRef<HTMLElement>(null);
+  const heroArtRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const pillarRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const pillar = pillars[activePillar];
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => {
+      setReducedMotion(preference.matches);
+      let stored = "";
+      try {
+        stored = localStorage.getItem("office-cloud-motion") || "";
+      } catch {
+        /* Storage is optional. */
+      }
+      setMotionEnabled(!preference.matches && stored !== "off");
+    };
+    updatePreference();
+    preference.addEventListener("change", updatePreference);
+    return () => preference.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
+    const target = platformRef.current;
+    if (!target) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setSceneStarted(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "350px" },
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const fromHash = () => {
+      const index = pillars.findIndex(
+        (item) => `#${item.id}` === window.location.hash,
+      );
+      if (index >= 0) {
+        setActivePillar(index);
+        setDetailsOpen(false);
+        setSceneStarted(true);
+        platformRef.current?.scrollIntoView({
+          behavior: "auto",
+          block: "start",
+        });
+      }
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [menuOpen]);
+
+  const selectPillar = useCallback((index: number) => {
+    if (index < 0 || index >= pillars.length) return;
+    setActivePillar(index);
+    setDetailsOpen(false);
+    window.history.replaceState(null, "", `#${pillars[index].id}`);
+  }, []);
+
+  function toggleMotion() {
+    if (reducedMotion) return;
+    setMotionEnabled((current) => {
+      try {
+        localStorage.setItem("office-cloud-motion", current ? "off" : "on");
+      } catch {
+        /* Storage is optional. */
+      }
+      return !current;
+    });
+  }
+
+  return (
+    <div
+      className={styles.experience}
+      data-motion={motionEnabled && !reducedMotion ? "on" : "off"}
+    >
+      <header className={styles.header}>
+        <nav className={styles.nav} aria-label="Main navigation">
+          <Link
+            href="/"
+            className={styles.brand}
+            aria-label="Office & Cloud home"
+          >
+            <Logo />
+          </Link>
+          <div className={styles.desktopLinks}>
+            <a href="#platform">Platform</a>
+            <a href="#device-agents">Device agents</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <div className={styles.navActions}>
+            <a className={styles.signIn} href={APP_SIGN_IN_URL}>
+              Sign in
+            </a>
+            <a
+              className={`${styles.button} ${styles.headerCta}`}
+              href="#preview"
+            >
+              Request access
+            </a>
+            <button
+              ref={menuButtonRef}
+              type="button"
+              className={styles.menuButton}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
+            >
+              {menuOpen ? <X size={21} /> : <Menu size={21} />}
+            </button>
+          </div>
+        </nav>
+        {menuOpen && (
+          <nav
+            className={styles.mobileNav}
+            id="mobile-navigation"
+            aria-label="Mobile navigation"
+          >
+            <a onClick={() => setMenuOpen(false)} href="#platform">
+              Platform
+            </a>
+            <a onClick={() => setMenuOpen(false)} href="#device-agents">
+              Device agents
+            </a>
+            <a onClick={() => setMenuOpen(false)} href="#faq">
+              FAQ
+            </a>
+            <a
+              className={styles.button}
+              onClick={() => setMenuOpen(false)}
+              href="#preview"
+            >
+              Request preview access
+            </a>
+          </nav>
+        )}
+      </header>
+      <main id="main-content">
+        <section
+          className={styles.hero}
+          id="top"
+          aria-labelledby="hero-heading"
+        >
+          <div className={styles.heroInner}>
+            <div className={styles.heroCopy}>
+              <p className={styles.eyebrow}>AI agents. Human accountability.</p>
+              <h1 id="hero-heading">
+                <span>Your AI workforce.</span>
+                <span>Managed like</span>
+                <span className={styles.heroAccent}>contractors.</span>
+              </h1>
+              <p className={styles.heroDescription}>
+                Give every AI agent a defined purpose, a human owner and a
+                review date. Bring policies, risk and spend together in one
+                place.
+              </p>
+              <div className={styles.heroActions}>
+                <a className={styles.button} href="#preview">
+                  Request preview access
+                </a>
+                <a className={styles.secondaryButton} href="#platform">
+                  Explore the platform
+                </a>
+              </div>
+              <a className={styles.exploreCue} href="#platform">
+                <span className={styles.cueLine} aria-hidden="true" />
+                Explore the five pillars
+              </a>
+            </div>
+            <div
+              className={styles.heroArtwork}
+              ref={heroArtRef}
+              onPointerMove={(event) => {
+                if (
+                  reducedMotion ||
+                  !motionEnabled ||
+                  event.pointerType !== "mouse"
+                )
+                  return;
+                const bounds = event.currentTarget.getBoundingClientRect();
+                event.currentTarget.style.setProperty(
+                  "--hero-x",
+                  `${((event.clientX - bounds.left) / bounds.width - 0.5) * 8}deg`,
+                );
+                event.currentTarget.style.setProperty(
+                  "--hero-y",
+                  `${((event.clientY - bounds.top) / bounds.height - 0.5) * -5}deg`,
+                );
+              }}
+              onPointerLeave={() => {
+                heroArtRef.current?.style.setProperty("--hero-x", "0deg");
+                heroArtRef.current?.style.setProperty("--hero-y", "0deg");
+              }}
+            >
+              <picture className={styles.heroPicture}>
+                <source
+                  media="(max-width: 700px)"
+                  srcSet="/images/ai-headquarters-mobile.webp"
+                />
+                <img
+                  src="/images/ai-headquarters.webp"
+                  width="1536"
+                  height="1024"
+                  alt="A glass AI headquarters illuminated in purple and cyan, with a module projecting toward you."
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
+              <div className={styles.heroRecord}>
+                <div className={styles.heroRecordTitle}>
+                  <FileText aria-hidden="true" size={23} />
+                  <div>
+                    <strong>Document summaries</strong>
+                    <span>AI use · Illustrative data</span>
+                  </div>
+                </div>
+                <dl>
+                  <div>
+                    <dt>Human owner</dt>
+                    <dd>Customer Success lead</dd>
+                  </div>
+                  <div>
+                    <dt>Next review</dt>
+                    <dd>4 Dec</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div className={styles.heroHorizon} aria-hidden="true" />
+        </section>
+        <section
+          className={styles.platform}
+          ref={platformRef}
+          id="platform"
+          aria-labelledby="platform-heading"
+        >
+          {pillars.map((item) => (
+            <span
+              key={item.id}
+              id={item.id}
+              className={styles.pillarAnchor}
+              aria-hidden="true"
+            />
+          ))}
+          <div className={styles.platformIntro}>
+            <div>
+              <p className={styles.eyebrow}>The platform</p>
+              <h2 id="platform-heading">
+                One AI use.
+                <br />
+                Five accountable decisions.
+              </h2>
+            </div>
+            <div className={styles.introAside}>
+              <p>Follow an AI use from discovery to its next review.</p>
+              <span>Illustrative walkthrough</span>
+            </div>
+          </div>
+          <div
+            className={styles.explorer}
+            data-scene-ready={sceneReady ? "true" : "false"}
+          >
+            <nav
+              className={styles.pillarNavigation}
+              aria-label="Explore the five pillars"
+            >
+              {pillars.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    ref={(node) => {
+                      pillarRefs.current[index] = node;
+                    }}
+                    type="button"
+                    key={item.id}
+                    id={`pillar-${item.id}`}
+                    aria-pressed={index === activePillar}
+                    aria-controls="pillar-evidence"
+                    className={styles.pillarButton}
+                    onClick={() => selectPillar(index)}
+                    onKeyDown={(event) => {
+                      let next: number | undefined;
+                      if (
+                        event.key === "ArrowDown" ||
+                        event.key === "ArrowRight"
+                      )
+                        next = (index + 1) % pillars.length;
+                      if (event.key === "ArrowUp" || event.key === "ArrowLeft")
+                        next = (index + pillars.length - 1) % pillars.length;
+                      if (event.key === "Home") next = 0;
+                      if (event.key === "End") next = pillars.length - 1;
+                      if (next !== undefined) {
+                        event.preventDefault();
+                        selectPillar(next);
+                        pillarRefs.current[next]?.focus();
+                      }
+                    }}
+                  >
+                    <Icon
+                      className={styles.pillarIcon}
+                      size={34}
+                      strokeWidth={1.55}
+                      aria-hidden="true"
+                    />
+                    <span>
+                      <strong>{item.name}</strong>
+                      <span className={styles.pillarQuestion}>
+                        {item.question}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </nav>
+            <div className={styles.sceneColumn}>
+              <div className={styles.scene}>
+                {sceneStarted ? (
+                  <HeadquartersScene
+                    activePillar={activePillar}
+                    onSelectPillar={selectPillar}
+                    reducedMotion={reducedMotion}
+                    motionEnabled={motionEnabled}
+                    onReady={() => setSceneReady(true)}
+                  />
+                ) : (
+                  <ScenePlaceholder />
+                )}
+              </div>
+              <div className={styles.sceneControls}>
+                <span>Select a pillar to explore</span>
+                <button
+                  type="button"
+                  onClick={toggleMotion}
+                  disabled={reducedMotion}
+                  aria-pressed={motionEnabled && !reducedMotion}
+                  aria-label={
+                    reducedMotion
+                      ? "Motion disabled by your reduced-motion preference"
+                      : motionEnabled
+                        ? "Pause scene motion"
+                        : "Play scene motion"
+                  }
+                >
+                  {motionEnabled && !reducedMotion ? (
+                    <Pause size={14} aria-hidden="true" />
+                  ) : (
+                    <Play size={14} aria-hidden="true" />
+                  )}
+                  <span>
+                    {reducedMotion
+                      ? "Reduced motion"
+                      : motionEnabled
+                        ? "Pause motion"
+                        : "Play motion"}
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div className={styles.evidenceColumn}>
+              <div className={styles.recordIdentity}>
+                <FileText size={17} aria-hidden="true" />
+                <span>
+                  <small>AI use record</small>
+                  <strong>Document summaries</strong>
+                </span>
+              </div>
+              <div
+                id="pillar-evidence"
+                role="region"
+                aria-labelledby={`pillar-${pillar.id}`}
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                <div className={styles.evidence} key={pillar.id}>
+                  <p className={styles.evidenceLabel}>{pillar.evidence}</p>
+                  <h3>{pillar.heading}</h3>
+                  {pillar.id === "ai-economics" && (
+                    <p className={styles.spendValue}>
+                      CAD 490<span>Illustrative recorded team spend</span>
+                    </p>
+                  )}
+                  <dl>
+                    {pillar.fields.map(([label, value]) => (
+                      <div key={label}>
+                        <dt>{label}</dt>
+                        <dd
+                          className={
+                            value === "Medium"
+                              ? styles.riskValue
+                              : value === "Complete" || value === "Available"
+                                ? styles.positiveValue
+                                : undefined
+                          }
+                        >
+                          {value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+                <p className={styles.pillarDescription}>{pillar.description}</p>
+              </div>
+              <div className={styles.humanOwner}>
+                <span>Human owner</span>
+                <strong>Customer Success lead</strong>
+              </div>
+              <button
+                type="button"
+                className={styles.detailToggle}
+                aria-expanded={detailsOpen}
+                aria-controls="pillar-context"
+                onClick={() => setDetailsOpen(!detailsOpen)}
+              >
+                {detailsOpen ? "Close context" : "Why this matters"}
+                <span aria-hidden="true">{detailsOpen ? "−" : "+"}</span>
+              </button>
+              {detailsOpen && (
+                <p id="pillar-context" className={styles.detailText}>
+                  {pillar.detail}
+                </p>
+              )}
+            </div>
+          </div>
+          <noscript>
+            <p className={styles.noScript}>
+              The five pillars connect discovery, device policies, risk
+              assessments, recorded AI costs and human review. Enable JavaScript
+              to explore the illustrative AI record interactively.
+            </p>
+          </noscript>
+        </section>
+        <SupportingSections />
+        <PreviewAccess />
+      </main>
+      <footer className={styles.footer}>
+        <Link href="/" aria-label="Office & Cloud home">
+          <Logo />
+        </Link>
+        <nav aria-label="Footer navigation">
+          <a href="#platform">Platform</a>
+          <a href="#device-agents">Device agents</a>
+          <a href="#faq">FAQ</a>
+          <Link href="/privacy/">Privacy</Link>
+          <Link href="/terms/">Terms</Link>
+        </nav>
+        <p>© {new Date().getFullYear()} Office &amp; Cloud</p>
+      </footer>
+    </div>
+  );
+}

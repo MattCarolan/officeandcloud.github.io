@@ -10,7 +10,7 @@ export function LegalPage({
   children: ReactNode;
 }) {
   return (
-    <main className="container-x py-12 sm:py-20">
+    <main id="main-content" className="container-x py-12 sm:py-20">
       <article className="mx-auto max-w-3xl">
         <Link href="/" className="text-sm font-medium text-brand-400 hover:underline">
           <Logo />
