@@ -1,12 +1,8 @@
 import type { CSSProperties } from "react";
-import {
-  ArrowUpRight,
-  Check,
-  ChevronDown,
-  FileText,
-} from "lucide-react";
+import { ArrowUpRight, Check, ChevronDown } from "lucide-react";
 import { APP_SIGN_IN_URL } from "@/lib/config";
 import { PlatformSupport } from "./PlatformSupport";
+import { ReportPreview } from "./ReportPreview";
 import styles from "./SupportingSections.module.css";
 
 const expenditure = [
@@ -121,7 +117,11 @@ export function SupportingSections() {
             </a>
           </article>
 
-          <article className={styles.reports} aria-labelledby="reports-heading">
+          <article
+            id="reports"
+            className={styles.reports}
+            aria-labelledby="reports-heading"
+          >
             <div className={styles.sectionLabel}>
               <span className={styles.eyebrow}>Reports</span>
             </div>
@@ -134,45 +134,7 @@ export function SupportingSections() {
               risk and impact assessments.
             </p>
 
-            <figure
-              className={styles.reportStage}
-              aria-labelledby="report-caption"
-            >
-              <div className={styles.reportBack} aria-hidden="true" />
-              <div className={styles.reportPaper}>
-                <div className={styles.reportTitle}>
-                  <FileText size={23} strokeWidth={1.6} aria-hidden="true" />
-                  <span>AI transparency report</span>
-                </div>
-                <p className={styles.reportUse}>Customer Success AI</p>
-                <dl className={styles.reportFields}>
-                  <div>
-                    <dt>Registry record</dt>
-                    <dd>AI use &amp; purpose</dd>
-                  </div>
-                  <div>
-                    <dt>Assessment</dt>
-                    <dd>Risk &amp; impact</dd>
-                  </div>
-                  <div>
-                    <dt>Human owner</dt>
-                    <dd>Customer Success lead</dd>
-                  </div>
-                  <div>
-                    <dt>Review</dt>
-                    <dd>Recorded review date</dd>
-                  </div>
-                </dl>
-                <div className={styles.reportFooter}>
-                  <span>Office &amp; Cloud</span>
-                </div>
-              </div>
-              <figcaption id="report-caption" className={styles.srOnly}>
-                AI transparency report for Customer Success AI,
-                combining an AI agent record, risk and impact assessment, human
-                owner and review date.
-              </figcaption>
-            </figure>
+            <ReportPreview />
 
             <ul className={styles.reportLinks}>
               <li>

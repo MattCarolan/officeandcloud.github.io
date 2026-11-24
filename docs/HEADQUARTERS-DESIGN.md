@@ -40,6 +40,10 @@ At viewport widths of **700px or less**, present a compact interactive example c
 - Do not mount the desktop WebGL scene on mobile, including a hidden canvas or scene component.
 - Preserve scroll position during normal selection. Align the compact panel only when it is currently clipped, so its selectors, navigation and example remain together in the viewport.
 
+### Transparency report preview
+
+The Reports preview is a finished executive document: a crisp, near-white report face over a purple dossier and layered paper edges. Use the real Office & Cloud brand, a strong report title, an executive overview with the existing Medium risk tier and Complete assessment, the Customer Success lead owner, the 4 Dec review date, and a compact evidence index. Keep text readable on mobile and make the document feel ready to share. Preserve the positive marketing treatment; do not add invented scores, certification seals or approval claims.
+
 ## Internal authoring guardrails
 
 The following boundaries are for contributors and claim review, not proposed marketing copy or FAQ answers. They keep the benefits truthful while the public page focuses on what customers can accomplish. Preserve the contractor oversight model without depicting AI software as human employees or inventing product capabilities.
