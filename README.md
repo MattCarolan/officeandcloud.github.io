@@ -49,13 +49,21 @@ The opening hero uses an optimized image with gentle pointer depth. A compact **
 
 On mobile, a portrait crop of the architecture sits behind the headline and body. Near-white and pale-lavender type stays readable over a dark gradient that fades into the vivid lower artwork. Keep the copy in normal document flow and reserve space for the floating agent record below the CTAs. Preserve actual image overlap into the operating-system strip and readable OS labels. These mobile refinements leave the desktop composition intact.
 
-The interactive five-floor headquarters receives the real-time 3D budget. Selecting a pillar brings its architectural floor forward and updates oversight evidence for the same Customer Success AI agent record, making the benefits of each pillar concrete.
+The desktop interactive five-floor headquarters receives the real-time 3D budget. Selecting a pillar brings its architectural floor forward and updates oversight evidence for the same Customer Success AI agent record, making the benefits of each pillar concrete. Preserve this full desktop composition and behavior.
 
 Scene loading is deferred until the platform approaches the viewport. Rendering is driven by interactions and stops when the scene settles, leaves the viewport or the document is hidden. A visible motion control and the operating system's reduced-motion preference disable animated movement while keeping pillar selection available.
 
-An SVG architectural fallback remains available while the scene loads and if WebGL initialization fails or the context is lost. Native pillar buttons and HTML evidence work independently of the canvas, including through touch and keyboard input. The five pillar hashes can link directly to the relevant state:
+On desktop, an SVG architectural fallback remains available while the scene loads and if WebGL initialization fails or the context is lost. Native pillar buttons and HTML evidence work independently of the canvas, including through touch and keyboard input. Both desktop and mobile use the same five pillar hashes to link directly to the relevant state:
 
 `#discovery`, `#governance`, `#risk-security`, `#ai-economics`, `#performance-value`.
+
+### Compact mobile pillar explorer
+
+At viewport widths of **700px or less**, use a compact interactive example card with a small architectural motif. Keep all five icon selectors visible in one row, labelled **Discover**, **Govern**, **Risk**, **Costs** and **Value**. The selected heading and accessible selector names use the full pillar names.
+
+Support swipe and previous/next controls alongside direct selection. Preserve the same evidence, active state and deep links across the mobile and desktop presentations. Keep default panel sizing consistent across the five states, with **Why this matters** available as optional details. Do not mount a hidden desktop WebGL scene on mobile.
+
+Selection normally preserves the current scroll position. Align the compact panel only when it is clipped, keeping the selectors, navigation and example together. The mobile redesign leaves the desktop explorer unchanged.
 
 ## Local development
 
@@ -159,6 +167,8 @@ Repository Pages settings must use **GitHub Actions** as the build/deployment so
 - [ ] Lint, TypeScript and production static export pass; inspect the exported site rather than relying only on development mode.
 - [ ] All five pillar states, direct hash links, keyboard controls and evidence panels work.
 - [ ] Check desktop and 320px/390px layouts, visible mobile sign-in, focus styling and absence of horizontal overflow.
+- [ ] At 700px and below, verify all five mobile selectors stay visible in one row, full accessible names, swipe and previous/next controls, consistent default panel sizing and optional details. Confirm no desktop WebGL scene is mounted.
+- [ ] Verify mobile selection preserves scroll when the panel is visible and aligns it only when clipped, keeping controls and evidence together. Check shared state/deep links across the breakpoint and confirm the full desktop explorer remains unchanged.
 - [ ] Confirm the hero artwork visibly overlaps the Supported strip without covering its official Windows/macOS/Linux brand silhouettes, readable names, any verified web-app browser logos or the device-section link.
 - [ ] Confirm the approved hero copy, Customer Success AI record and team-level spend remain consistent. Public copy sells visibility, policy boundaries, accountability, risk oversight and cost control; review claims against the internal authoring guardrails.
 - [ ] Verify delayed scene loading, WebGL fallback, reduced motion, the pause control and offscreen/hidden-tab rendering behavior.

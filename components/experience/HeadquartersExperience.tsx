@@ -26,6 +26,7 @@ import { Logo } from "@/components/ui/Logo";
 import { SupportingSections } from "./SupportingSections";
 import { PreviewAccess } from "./PreviewAccess";
 import { PlatformSupport } from "./PlatformSupport";
+import { MobilePillarExplorer } from "./MobilePillarExplorer";
 import styles from "./HeadquartersExperience.module.css";
 
 const HeadquartersScene = dynamic(() => import("./HeadquartersScene"), {
@@ -140,11 +141,21 @@ export function HeadquartersExperience() {
   const [sceneStarted, setSceneStarted] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [compactViewport, setCompactViewport] = useState<boolean | null>(null);
   const platformRef = useRef<HTMLElement>(null);
+  const compactRef = useRef<HTMLDivElement>(null);
   const heroArtRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pillarRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const pillar = pillars[activePillar];
+
+  useEffect(() => {
+    const viewport = window.matchMedia("(max-width: 700px)");
+    const updateViewport = () => setCompactViewport(viewport.matches);
+    updateViewport();
+    viewport.addEventListener("change", updateViewport);
+    return () => viewport.removeEventListener("change", updateViewport);
+  }, []);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -188,10 +199,16 @@ export function HeadquartersExperience() {
         setActivePillar(index);
         setDetailsOpen(false);
         setSceneStarted(true);
-        platformRef.current?.scrollIntoView({
-          behavior: "auto",
-          block: "start",
-        });
+        if (window.matchMedia("(max-width: 700px)").matches) {
+          requestAnimationFrame(() => {
+            compactRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+          });
+        } else {
+          platformRef.current?.scrollIntoView({
+            behavior: "auto",
+            block: "start",
+          });
+        }
       }
     };
     fromHash();
@@ -434,6 +451,7 @@ export function HeadquartersExperience() {
               </p>
             </div>
           </div>
+          {compactViewport !== true && (
           <div
             className={styles.explorer}
             data-scene-ready={sceneReady ? "true" : "false"}
@@ -492,7 +510,7 @@ export function HeadquartersExperience() {
             </nav>
             <div className={styles.sceneColumn}>
               <div className={styles.scene}>
-                {sceneStarted ? (
+                {sceneStarted && compactViewport === false ? (
                   <HeadquartersScene
                     activePillar={activePillar}
                     onSelectPillar={selectPillar}
@@ -599,6 +617,17 @@ export function HeadquartersExperience() {
               )}
             </div>
           </div>
+          )}
+          {compactViewport !== false && (
+            <div className={styles.mobileExplorer} ref={compactRef}>
+              <MobilePillarExplorer
+                pillars={pillars}
+                activeIndex={activePillar}
+                onSelect={selectPillar}
+                reducedMotion={reducedMotion || !motionEnabled}
+              />
+            </div>
+          )}
           <noscript>
             <p className={styles.noScript}>
               The five pillars connect discovery, device policies, risk
