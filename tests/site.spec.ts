@@ -387,6 +387,15 @@ test("renders the production page, preserves mobile sign-in, and captures the de
       contentType: "image/png",
     });
   }
+  const reportPath = info.outputPath("transparency-report.png");
+  await page.locator('figure[aria-labelledby="report-caption"]').screenshot({
+    path: reportPath,
+    animations: "disabled",
+  });
+  await info.attach("transparency-report", {
+    path: reportPath,
+    contentType: "image/png",
+  });
   await screenshot(page, info, "full-page", true);
   await expectNoHorizontalOverflow(page);
   expect(pageErrors).toEqual([]);
