@@ -16,6 +16,8 @@ Lead with what Office & Cloud does and why it matters. The approved hero body is
 
 Describe concrete benefits: see the AI workforce, establish clear policies, assign human owners, review risk and understand spending. Keep the tone direct and confident. The FAQ covers **discovery, costs, governance, shareable evidence and getting started**.
 
+The platform introduction states its capabilities directly, without a separate walkthrough label.
+
 Capability boundaries belong in the internal authoring guardrails below. Do not turn them into public negative feature disclaimers, explanations about where people enter prompts or perform day-to-day work, or explanations of what "payroll" does not mean. Use accurate, positive descriptions of the supported features.
 
 ## The signature scene

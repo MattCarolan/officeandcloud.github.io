@@ -453,7 +453,6 @@ export function HeadquartersExperience() {
                 Explore ownership, policies, risk and spend around an AI agent
                 record.
               </p>
-              <span>Illustrative walkthrough</span>
             </div>
           </div>
           <div
