@@ -136,6 +136,7 @@ function ScenePlaceholder() {
 export function HeadquartersExperience() {
   const [activePillar, setActivePillar] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(true);
   const [motionEnabled, setMotionEnabled] = useState(false);
   const [sceneStarted, setSceneStarted] = useState(false);
@@ -148,6 +149,13 @@ export function HeadquartersExperience() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pillarRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const pillar = pillars[activePillar];
+
+  useEffect(() => {
+    const updateHeader = () => setHeaderScrolled(window.scrollY > 12);
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    return () => window.removeEventListener("scroll", updateHeader);
+  }, []);
 
   useEffect(() => {
     const viewport = window.matchMedia("(max-width: 700px)");
@@ -252,7 +260,10 @@ export function HeadquartersExperience() {
       className={styles.experience}
       data-motion={motionEnabled && !reducedMotion ? "on" : "off"}
     >
-      <header className={styles.header}>
+      <header
+        className={styles.header}
+        data-solid={headerScrolled || menuOpen ? "true" : "false"}
+      >
         <nav className={styles.nav} aria-label="Main navigation">
           <Link
             href="/"
@@ -341,10 +352,6 @@ export function HeadquartersExperience() {
                   Explore the platform
                 </a>
               </div>
-              <a className={styles.exploreCue} href="#platform">
-                <span className={styles.cueLine} aria-hidden="true" />
-                Explore the five pillars
-              </a>
             </div>
             <div
               className={styles.heroArtwork}

@@ -14,10 +14,47 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(8, 11, 24, 0.9);
-  border-bottom: 1px solid var(--oc-line);
+  background: linear-gradient(
+    180deg,
+    rgba(8, 11, 24, 0.96) 0%,
+    rgba(8, 11, 24, 0.9) 42%,
+    rgba(8, 11, 24, 0.62) 65%,
+    transparent 100%
+  );
+  border-bottom: 1px solid transparent;
+}
+.header::before,
+.header::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+.header::before {
+  inset: 0;
+  background: rgba(8, 11, 24, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.header::after {
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--oc-line) 0%,
+    var(--oc-line) 45%,
+    transparent 72%
+  );
+}
+.header[data-solid="true"]::before {
+  opacity: 1;
+}
+.header[data-solid="true"]::after {
+  background: var(--oc-line);
 }
 .nav {
   max-width: 1440px;
@@ -190,20 +227,6 @@
   flex-wrap: wrap;
   margin-top: 32px;
 }
-.exploreCue {
-  display: inline-flex;
-  gap: 14px;
-  align-items: center;
-  font-size: 13px;
-  color: #d0d5e6;
-  margin-top: 83px;
-}
-.cueLine {
-  width: 25px;
-  height: 1px;
-  background: var(--oc-cyan);
-  box-shadow: 0 0 10px rgba(0, 188, 222, 0.5);
-}
 .heroArtwork {
   --hero-x: 0deg;
   --hero-y: 0deg;
@@ -211,7 +234,7 @@
   z-index: 2;
   right: -170px;
   bottom: -66px;
-  width: 1140px;
+  width: 1350px;
   aspect-ratio: 1.5;
   perspective: 1000px;
   transform: translateZ(0);
@@ -229,13 +252,20 @@
   height: auto;
   max-width: none;
   display: block;
-  mask-image: linear-gradient(90deg, transparent 0%, #000 15%, #000 100%);
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 10%,
+    rgba(0, 0, 0, 0.2) 23%,
+    #000 44%
+  ), linear-gradient(180deg, transparent 68%, #000 89%);
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
-    #000 15%,
-    #000 100%
-  );
+    transparent 10%,
+    rgba(0, 0, 0, 0.2) 23%,
+    #000 44%
+  ), linear-gradient(180deg, transparent 68%, #000 89%);
   filter: drop-shadow(0 42px 30px rgba(0, 0, 0, 0.3));
 }
 .heroRecord {
@@ -737,7 +767,7 @@
 @media (min-width: 1600px) {
   .heroArtwork {
     right: -150px;
-    width: 1200px;
+    width: 1450px;
     bottom: -70px;
   }
   .heroInner {
@@ -779,7 +809,23 @@
   .heroArtwork {
     right: -230px;
     bottom: -60px;
-    width: 980px;
+    width: 1260px;
+  }
+  .heroPicture img {
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 18%,
+      rgba(0, 0, 0, 0.15) 37%,
+      #000 62%
+    ), linear-gradient(180deg, transparent 68%, #000 89%);
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 18%,
+      rgba(0, 0, 0, 0.15) 37%,
+      #000 62%
+    ), linear-gradient(180deg, transparent 68%, #000 89%);
   }
   .heroRecord {
     right: 225px;
@@ -909,7 +955,7 @@
   .heroArtwork {
     right: -300px;
     bottom: -55px;
-    width: 900px;
+    width: 1190px;
   }
   .heroDescription {
     max-width: 350px;
@@ -934,9 +980,6 @@
   }
   .heroRecord dl {
     font-size: 10px;
-  }
-  .exploreCue {
-    margin-top: 64px;
   }
   .heroSupportInner {
     grid-template-columns: minmax(0, 1fr);
@@ -1091,12 +1134,9 @@
     background: rgba(8, 11, 24, 0.9);
     border-color: rgba(221, 215, 255, 0.5);
   }
-  .exploreCue {
-    display: none;
-  }
   .heroArtwork {
     position: absolute;
-    top: 0;
+    top: -32px;
     bottom: -140px;
     left: 0;
     right: 0;
@@ -1114,8 +1154,9 @@
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(8, 11, 24, 0.38) 0,
-      rgba(8, 11, 24, 0.68) 50px,
+      transparent 0,
+      rgba(8, 11, 24, 0.38) 32px,
+      rgba(8, 11, 24, 0.68) 82px,
       rgba(8, 11, 24, 0.68) calc(100% - 240px),
       rgba(8, 11, 24, 0.05) calc(100% - 150px),
       transparent 100%
@@ -1370,6 +1411,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .header::before,
   .heroPicture,
   .button,
   .secondaryButton,
