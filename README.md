@@ -46,6 +46,8 @@ The homepage is composed by `HeadquartersExperience`. Its primary content and co
 
 The opening hero uses an optimized image with gentle pointer depth. A compact operating-system strip sits directly beneath it: **Windows**, **macOS Beta** and **Linux Beta**, with the caveat **Capabilities vary by platform.** and a link to the detailed device agents section. The architectural artwork visibly overlaps the hero-to-strip boundary while the strip's labels and link remain readable and usable.
 
+On mobile, a portrait crop of the architecture sits behind the headline and body. Near-white and pale-lavender type stays readable over a dark gradient that fades into the vivid lower artwork. Keep the copy in normal document flow and reserve space for the floating agent record below the CTAs. Preserve actual image overlap into the operating-system strip and readable OS labels. These mobile refinements leave the desktop composition intact.
+
 The interactive five-floor headquarters receives the real-time 3D budget. Selecting a pillar brings its architectural floor forward and updates oversight evidence for the same Customer Success AI agent record, making the benefits of each pillar concrete.
 
 Scene loading is deferred until the platform approaches the viewport. Rendering is driven by interactions and stops when the scene settles, leaves the viewport or the document is hidden. A visible motion control and the operating system's reduced-motion preference disable animated movement while keeping pillar selection available.

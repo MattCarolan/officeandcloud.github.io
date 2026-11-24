@@ -26,6 +26,8 @@ The opening uses an optimized, locally served architectural asset. This keeps th
 
 Directly beneath the hero, restore a compact operating-system strip showing **Windows**, **macOS Beta** and **Linux Beta**. Include **Capabilities vary by platform.** and a link to the detailed device agents section. The architectural artwork itself must visibly cross the hero-to-strip boundary, reinforcing the image's projection out of the page. Preserve readable labels and an unobstructed link across desktop and mobile layouts; a background glow alone does not satisfy the artwork-overlap requirement.
 
+For mobile, place a portrait crop behind the headline and body, with near-white and pale-lavender type protected by a dark gradient that fades into the vivid lower architecture. Keep the copy in normal document flow and reserve room for the floating agent record below the CTAs. The actual artwork still overlaps the operating-system strip, whose labels and link remain readable and usable. Preserve the desktop composition.
+
 ## Internal authoring guardrails
 
 The following boundaries are for contributors and claim review, not proposed marketing copy or FAQ answers. They keep the benefits truthful while the public page focuses on what customers can accomplish. Preserve the contractor oversight model without depicting AI software as human employees or inventing product capabilities.
