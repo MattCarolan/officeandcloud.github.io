@@ -4,17 +4,21 @@ The public website for **Office & Cloud**, hosted at [officeandcloud.com](https:
 
 **Your AI workforce. Managed like contractors.**
 
-The site explains how organizations can give AI software agents a defined purpose, a human owner and a review date, with policies, risk and recorded spend informing their decisions. The interactive headquarters follows one illustrative AI use, **Document summaries**, through five pillars:
+The hero eyebrow is **HR & payroll for AI agents.** Office & Cloud provides oversight of an organization's AI workforce: defined purposes, human ownership, policies, risk, recorded expenses, licences, token estimates, budgets and reviews. Prompts and day-to-day work stay in the AI tools.
+
+Here, **HR & payroll** describes the oversight model. AI software agents are managed like contractors, with people accountable for their use and expenditure. The site must not imply employee status, salary payments, payroll transactions, prompt routing or universal enforcement of agent runtime permissions.
+
+The platform section is headed **One AI workforce. Five layers of oversight.** Its interactive headquarters follows the same illustrative **AI agent record**, **Customer Success AI**, with **Customer Success lead** as the human owner, through five pillars:
 
 | Pillar | Question |
 | --- | --- |
 | Discovery | Which AI agents and apps are in use? |
-| Governance | Which policies apply? |
-| Risk & Security | What risks does each AI use introduce? |
-| AI Economics | What is our AI usage costing us? |
+| Governance | Which rules apply to each AI use? |
+| Risk & Security | What risks need attention? |
+| AI Economics | What does our AI workforce cost? |
 | Performance & Value | Which AI agents should we keep using? |
 
-The approved visual direction and product boundaries are preserved in [the headquarters design brief](docs/HEADQUARTERS-DESIGN.md). Read it before changing the experience or marketing claims. Example records and expenditure are labelled illustrative; they do not represent live agent telemetry or automated ROI measurements.
+The approved visual direction and product boundaries are preserved in [the headquarters design brief](docs/HEADQUARTERS-DESIGN.md). Read it before changing the experience or marketing claims. Example records and expenditure are labelled illustrative; they do not represent live agent telemetry or automated ROI measurements. **CAD 490 remains recorded Customer Success team expenditure**, not an agent salary or a measured cost attributed to Customer Success AI.
 
 ## Stack and architecture
 
@@ -30,7 +34,9 @@ The homepage is composed by `HeadquartersExperience`. Its primary content and co
 
 ### One 3D scene, with a useful fallback
 
-The opening hero uses an optimized image with gentle pointer depth. The interactive five-floor headquarters receives the real-time 3D budget. Selecting a pillar brings its architectural floor forward and updates the evidence for the same AI use.
+The opening hero uses an optimized image with gentle pointer depth. A compact operating-system strip sits directly beneath it: **Windows**, **macOS Beta** and **Linux Beta**, with the caveat **Capabilities vary by platform.** and a link to the detailed device agents section. The architectural artwork visibly overlaps the hero-to-strip boundary while the strip's labels and link remain readable and usable.
+
+The interactive five-floor headquarters receives the real-time 3D budget. Selecting a pillar brings its architectural floor forward and updates oversight evidence for the same Customer Success AI agent record. This is an illustrative explanation of the platform, not an interface for sending prompts or running the agent's daily tasks.
 
 Scene loading is deferred until the platform approaches the viewport. Rendering is driven by interactions and stops when the scene settles, leaves the viewport or the document is hidden. A visible motion control and the operating system's reduced-motion preference disable animated movement while keeping pillar selection available.
 
@@ -140,6 +146,8 @@ Repository Pages settings must use **GitHub Actions** as the build/deployment so
 - [ ] Lint, TypeScript and production static export pass; inspect the exported site rather than relying only on development mode.
 - [ ] All five pillar states, direct hash links, keyboard controls and evidence panels work.
 - [ ] Check desktop and 320px/390px layouts, visible mobile sign-in, focus styling and absence of horizontal overflow.
+- [ ] Confirm the hero artwork visibly overlaps the operating-system strip without covering Windows, macOS Beta, Linux Beta, the capability caveat or the device-section link.
+- [ ] Confirm the HR/payroll oversight message, Customer Success AI record and team-level spend remain consistent; no copy implies salary payments, prompt routing, universal runtime enforcement or automatic ROI.
 - [ ] Verify delayed scene loading, WebGL fallback, reduced motion, the pause control and offscreen/hidden-tab rendering behavior.
 - [ ] Verify preview validation, exact payload and success/failure with **intercepted requests only**; make **no real test form submission**.
 - [ ] Confirm the custom domain, sign-in, privacy and terms links; no new environment variables are required.

@@ -23,9 +23,19 @@ const recordedTotal = expenditure.reduce(
 
 const questions = [
   {
+    question: "What does HR and payroll mean for AI agents?",
+    answer:
+      "It means oversight of the AI tools your people use: accountable human owners, policy boundaries, risk reviews, licences and budgets. Payroll refers to recorded AI spending and cost planning. Office & Cloud does not process employee salaries, tax filings or payments.",
+  },
+  {
+    question: "Does Office & Cloud manage prompts or assign tasks?",
+    answer:
+      "No. Your people write prompts and do their work directly in their chosen AI tools. Office & Cloud does not write, route or execute prompts, assign work to AI agents, or act as their direct manager. It provides the HR and payroll layer around those tools: ownership, policies, risk reviews and visibility into AI costs.",
+  },
+  {
     question: "What can I discover?",
     answer:
-      "Device agents detect supported AI apps on enrolled devices. You can also register known AI agents and use cases directly, including their purpose, human owner and review date. Discovery depends on the device platform and the apps it supports.",
+      "Device agents detect supported AI apps on enrolled devices. You can also register known AI agents and apps directly, documenting their purpose, accountable human owner and review date. Discovery depends on the device platform and the apps it supports.",
   },
   {
     question: "What can I share?",
@@ -35,7 +45,7 @@ const questions = [
   {
     question: "Are AI agents and device agents the same thing?",
     answer:
-      "No. AI agents and apps are the AI tools your organization uses. Office & Cloud device agents are software installed on enrolled computers to discover supported AI apps and apply supported device policies. They provide information for managing your AI workforce.",
+      "No. AI agents and apps are the AI tools your organization uses. Office & Cloud device agents are software installed on enrolled computers to discover supported AI apps and apply supported device policies. They provide information and supported controls for AI oversight.",
   },
   {
     question: "Do all device platforms have the same capabilities?",
@@ -52,11 +62,11 @@ export function SupportingSections() {
         aria-labelledby="accountability-heading"
       >
         <div className={styles.wrap}>
-          <p className={styles.eyebrow}>Built around accountability</p>
+          <p className={styles.eyebrow}>HR and payroll for AI agents</p>
           <h2 id="accountability-heading" className={styles.statement}>
-            AI can do the work.
+            Set the policies.
             <br />
-            <span>You own the decisions.</span>
+            <span>Know the cost.</span>
           </h2>
           <div className={styles.architecture} aria-hidden="true">
             <span />
@@ -80,8 +90,8 @@ export function SupportingSections() {
               See the spend.
             </h2>
             <p className={styles.description}>
-              Bring recorded expenses, licence reviews, token estimates and
-              budget alerts into the same conversation.
+              Understand what your AI workforce costs. Record expenses, review
+              licences, estimate token costs and set budget alerts.
             </p>
 
             <div className={styles.expenditure}>
@@ -128,8 +138,9 @@ export function SupportingSections() {
               Show the evidence.
             </h2>
             <p className={styles.description}>
-              Turn your registry records and completed assessments into a clear,
-              shareable account of how AI is used.
+              Document the oversight around your AI agents and apps. Build
+              shareable transparency reports from registry records and completed
+              risk and impact assessments.
             </p>
 
             <figure
@@ -142,7 +153,7 @@ export function SupportingSections() {
                   <FileText size={23} strokeWidth={1.6} aria-hidden="true" />
                   <span>AI transparency report</span>
                 </div>
-                <p className={styles.reportUse}>Document summaries</p>
+                <p className={styles.reportUse}>Customer Success AI</p>
                 <dl className={styles.reportFields}>
                   <div>
                     <dt>Registry record</dt>
@@ -167,8 +178,9 @@ export function SupportingSections() {
                 </div>
               </div>
               <figcaption id="report-caption" className={styles.srOnly}>
-                Illustrative AI transparency report combining a registry record,
-                risk and impact assessment, human owner and review date.
+                Illustrative AI transparency report for Customer Success AI,
+                combining an AI agent record, risk and impact assessment, human
+                owner and review date.
               </figcaption>
             </figure>
 
@@ -205,8 +217,9 @@ export function SupportingSections() {
             <p className={styles.eyebrow}>Connected to your devices</p>
             <h2 className={styles.deviceHeading}>Start where AI is used.</h2>
             <p className={styles.description}>
-              Enrol devices to discover supported AI apps, then connect what you
-              find with the people responsible for their use.
+              Enrol devices to discover supported AI apps and apply supported
+              policies. Record who is accountable for each AI agent or app and
+              how it is used.
             </p>
             <ul
               className={styles.platforms}

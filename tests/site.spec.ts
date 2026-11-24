@@ -13,15 +13,11 @@ const responseHeaders = {
   "content-type": "application/json",
 };
 const pillars = [
-  ["discovery", "Discovery", "Know what AI is used for."],
-  ["governance", "Governance", "Make the boundaries clear."],
-  ["risk-security", "Risk & Security", "Bring the evidence into view."],
-  ["ai-economics", "AI Economics", "Make the cost visible."],
-  [
-    "performance-value",
-    "Performance & Value",
-    "Keep the next decision in view.",
-  ],
+  ["discovery", "Discovery", "Keep an accountable register."],
+  ["governance", "Governance", "Set the rules for AI use."],
+  ["risk-security", "Risk & Security", "Make risk reviewable."],
+  ["ai-economics", "AI Economics", "Account for AI spend."],
+  ["performance-value", "Performance & Value", "Review continued use."],
 ] as const;
 
 async function mockPreview(
@@ -133,6 +129,35 @@ test("renders the production page, preserves mobile sign-in, and captures the de
     )
     .toBeGreaterThan(0);
   await page.evaluate(() => document.fonts.ready.then(() => true));
+  await expect(page.locator("#platform-heading")).toHaveText(
+    /One AI workforce\.\s*Five layers of oversight\./,
+  );
+  const platformSupport = page.locator("#supported-platforms");
+  await expect(platformSupport).toHaveAttribute(
+    "aria-label",
+    "Device agent platform support",
+  );
+  await expect(
+    platformSupport.getByText("Windows", { exact: true }),
+  ).toBeVisible();
+  await expect(platformSupport.getByText(/macOS\s*Beta/)).toBeVisible();
+  await expect(platformSupport.getByText(/Linux\s*Beta/)).toBeVisible();
+  await expect
+    .poll(
+      () =>
+        page.locator("[data-hero-artwork]").evaluate((artwork) => {
+          const support = document.getElementById("supported-platforms");
+          return support
+            ? artwork.getBoundingClientRect().bottom -
+                support.getBoundingClientRect().top
+            : -1;
+        }),
+      {
+        message:
+          "Hero artwork should overlap the device platform strip by at least 12px.",
+      },
+    )
+    .toBeGreaterThanOrEqual(12);
 
   const signIn = page
     .getByRole("navigation", { name: "Main navigation", exact: true })
@@ -209,7 +234,7 @@ test("the five pillars change one AI record and keep a single scene", async ({
     await expect(
       page
         .locator("#platform")
-        .getByText("Document summaries", { exact: true }),
+        .getByText("Customer Success AI", { exact: true }),
     ).toHaveCount(1);
     await expect(
       page
@@ -257,7 +282,7 @@ test("deep links select a pillar and repeated lower links scroll back to it", as
   );
   await expect(
     page.locator("#pillar-evidence").getByRole("heading"),
-  ).toHaveText("Bring the evidence into view.");
+  ).toHaveText("Make risk reviewable.");
   const economicsLink = page.getByRole("link", {
     name: "Explore AI economics",
     exact: true,
@@ -315,7 +340,7 @@ test("motion can be paused, persists, and respects reduced motion", async ({
   await page.locator("#pillar-governance").click();
   await expect(
     page.locator("#pillar-evidence").getByRole("heading"),
-  ).toHaveText("Make the boundaries clear.");
+  ).toHaveText("Set the rules for AI use.");
 });
 
 test("privacy and terms resolve as static routes with working skip targets", async ({

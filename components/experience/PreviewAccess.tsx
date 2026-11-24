@@ -91,8 +91,9 @@ export function PreviewAccess() {
             <span>Own the decisions.</span>
           </h2>
           <p className={styles.intro}>
-            Start with an enrolled device or a use case your team already knows
-            about. Bring its purpose, owner, policies, risk and spend into view.
+            Give the AI agents and apps your team uses an HR and payroll layer:
+            accountable owners, policies, risk reviews and visibility into AI
+            spending.
           </p>
           <p className={styles.signIn}>
             Already have access?{" "}

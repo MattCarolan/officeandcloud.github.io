@@ -11,14 +11,17 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   Coins,
-  FileText,
+  Cpu,
   Gauge,
+  Laptop,
   Menu,
+  Monitor,
   Pause,
   Play,
   ScanSearch,
   ShieldCheck,
   SlidersHorizontal,
+  Terminal,
   X,
 } from "lucide-react";
 import { APP_SIGN_IN_URL } from "@/lib/config";
@@ -37,27 +40,27 @@ const pillars = [
     name: "Discovery",
     icon: ScanSearch,
     question: "Which AI agents and apps are in use?",
-    heading: "Know what AI is used for.",
+    heading: "Keep an accountable register.",
     evidence: "AI Registry",
     description:
-      "Discover supported AI apps on enrolled devices. Document AI agents and use cases in the registry, with a clear purpose and a human owner.",
+      "Discover supported AI apps on enrolled devices. Register AI agents and uses with a human owner, team and review date.",
     fields: [
-      ["Purpose", "Summarize internal documents"],
-      ["Registry", "AI use recorded"],
+      ["Team", "Customer Success"],
+      ["Registry", "AI agent recorded"],
       ["Next review", "4 Dec"],
     ],
     detail:
-      "Device discovery identifies supported installed AI apps. Your team adds the context: what the AI is used for, who is accountable, and when it should be reviewed.",
+      "Keep a record of the AI tools your organization is responsible for. Device discovery identifies supported installed apps; your team records the accountable human owner and review date.",
   },
   {
     id: "governance",
     name: "Governance",
     icon: SlidersHorizontal,
-    question: "Which policies apply?",
-    heading: "Make the boundaries clear.",
+    question: "Which rules apply to each AI use?",
+    heading: "Set the rules for AI use.",
     evidence: "Policies",
     description:
-      "Manage website and AI app policies on supported devices. Give your teams editable policy templates and a consistent starting point.",
+      "Apply website and AI app policies on supported devices. Give teams editable governance templates and clear boundaries for AI use.",
     fields: [
       ["Device group", "Customer Success"],
       ["Website policy", "Standard restrictions"],
@@ -70,8 +73,8 @@ const pillars = [
     id: "risk-security",
     name: "Risk & Security",
     icon: ShieldCheck,
-    question: "What risks does each AI use introduce?",
-    heading: "Bring the evidence into view.",
+    question: "What risks need attention?",
+    heading: "Make risk reviewable.",
     evidence: "Risk & impact assessment",
     description:
       "Assess AI use cases, review Audit Trail activity and build transparency reports from the evidence in your registry and assessments.",
@@ -87,28 +90,28 @@ const pillars = [
     id: "ai-economics",
     name: "AI Economics",
     icon: Coins,
-    question: "What is our AI usage costing us?",
-    heading: "Make the cost visible.",
+    question: "What does our AI workforce cost?",
+    heading: "Account for AI spend.",
     evidence: "Recorded team spend",
     description:
-      "Record AI expenses, review licences, estimate token costs and set budget alerts. Understand the spend behind your AI decisions.",
+      "Record AI expenses, review licences, estimate token costs and set budget alerts. Keep the costs of your AI workforce in view.",
     fields: [
       ["Team", "Customer Success"],
       ["Source", "AI expense register"],
       ["Scope", "Recorded team expenditure"],
     ],
     detail:
-      "This example is recorded team spend, not a live meter for this AI agent. Token estimates and recorded expenses are separate views of the economics.",
+      "The payroll side of AI oversight covers subscriptions, licences and usage expenses. This example shows recorded Customer Success team spending; token estimates help with cost planning.",
   },
   {
     id: "performance-value",
     name: "Performance & Value",
     icon: Gauge,
     question: "Which AI agents should we keep using?",
-    heading: "Keep the next decision in view.",
+    heading: "Review continued use.",
     evidence: "My Digital Workforce",
     description:
-      "Find ownership gaps and upcoming reviews. Use the evidence you have to decide whether an AI use still earns its place.",
+      "Find ownership gaps and upcoming reviews. Bring recorded costs, risk assessments and human judgment to decisions about continued use.",
     fields: [
       ["Next review", "4 Dec"],
       ["Human owner", "Assigned"],
@@ -304,16 +307,16 @@ export function HeadquartersExperience() {
         >
           <div className={styles.heroInner}>
             <div className={styles.heroCopy}>
-              <p className={styles.eyebrow}>AI agents. Human accountability.</p>
+              <p className={styles.eyebrow}>HR &amp; payroll for AI agents</p>
               <h1 id="hero-heading">
                 <span>Your AI workforce.</span>
                 <span>Managed like</span>
                 <span className={styles.heroAccent}>contractors.</span>
               </h1>
               <p className={styles.heroDescription}>
-                Give every AI agent a defined purpose, a human owner and a
-                review date. Bring policies, risk and spend together in one
-                place.
+                Know which AI agents are in use, set clear policy boundaries
+                and keep their costs in check. Prompts and day-to-day work stay
+                in your AI tools.
               </p>
               <div className={styles.heroActions}>
                 <a className={styles.button} href="#preview">
@@ -330,6 +333,7 @@ export function HeadquartersExperience() {
             </div>
             <div
               className={styles.heroArtwork}
+              data-hero-artwork
               ref={heroArtRef}
               onPointerMove={(event) => {
                 if (
@@ -369,10 +373,10 @@ export function HeadquartersExperience() {
               </picture>
               <div className={styles.heroRecord}>
                 <div className={styles.heroRecordTitle}>
-                  <FileText aria-hidden="true" size={23} />
+                  <Cpu aria-hidden="true" size={23} />
                   <div>
-                    <strong>Document summaries</strong>
-                    <span>AI use · Illustrative data</span>
+                    <strong>Customer Success AI</strong>
+                    <span>AI agent · Illustrative data</span>
                   </div>
                 </div>
                 <dl>
@@ -388,7 +392,38 @@ export function HeadquartersExperience() {
               </div>
             </div>
           </div>
-          <div className={styles.heroHorizon} aria-hidden="true" />
+          <div
+            className={styles.heroSupport}
+            id="supported-platforms"
+            role="region"
+            aria-label="Device agent platform support"
+          >
+            <div className={styles.heroSupportInner}>
+              <div className={styles.supportHeading}>
+                <a href="#device-agents">Device agents</a>
+                <span>Capabilities vary by platform.</span>
+              </div>
+              <ul
+                className={styles.supportPlatforms}
+                aria-label="Supported operating systems"
+              >
+                <li>
+                  <Monitor size={19} aria-hidden="true" />
+                  <strong>Windows</strong>
+                </li>
+                <li>
+                  <Laptop size={19} aria-hidden="true" />
+                  <strong>macOS</strong>
+                  <span>Beta</span>
+                </li>
+                <li>
+                  <Terminal size={19} aria-hidden="true" />
+                  <strong>Linux</strong>
+                  <span>Beta</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </section>
         <section
           className={styles.platform}
@@ -408,13 +443,16 @@ export function HeadquartersExperience() {
             <div>
               <p className={styles.eyebrow}>The platform</p>
               <h2 id="platform-heading">
-                One AI use.
+                One AI workforce.
                 <br />
-                Five accountable decisions.
+                Five layers of oversight.
               </h2>
             </div>
             <div className={styles.introAside}>
-              <p>Follow an AI use from discovery to its next review.</p>
+              <p>
+                Explore ownership, policies, risk and spend around an AI agent
+                record.
+              </p>
               <span>Illustrative walkthrough</span>
             </div>
           </div>
@@ -520,10 +558,10 @@ export function HeadquartersExperience() {
             </div>
             <div className={styles.evidenceColumn}>
               <div className={styles.recordIdentity}>
-                <FileText size={17} aria-hidden="true" />
+                <Cpu size={17} aria-hidden="true" />
                 <span>
-                  <small>AI use record</small>
-                  <strong>Document summaries</strong>
+                  <small>AI agent record</small>
+                  <strong>Customer Success AI</strong>
                 </span>
               </div>
               <div
