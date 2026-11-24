@@ -135,13 +135,13 @@ test("renders the production page, preserves mobile sign-in, and captures the de
   const platformSupport = page.locator("#supported-platforms");
   await expect(platformSupport).toHaveAttribute(
     "aria-label",
-    "Device agent platform support",
+    "Supported platforms",
   );
   await expect(
     platformSupport.getByText("Windows", { exact: true }),
   ).toBeVisible();
-  await expect(platformSupport.getByText(/macOS\s*Beta/)).toBeVisible();
-  await expect(platformSupport.getByText(/Linux\s*Beta/)).toBeVisible();
+  await expect(platformSupport.getByText("macOS", { exact: true })).toBeVisible();
+  await expect(platformSupport.getByText("Linux", { exact: true })).toBeVisible();
   await expect
     .poll(
       () =>

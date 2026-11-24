@@ -345,37 +345,8 @@
   letter-spacing: -0.04em;
   font-weight: 600;
 }
-.platforms {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 11px;
-  margin: 27px 0 13px;
-  padding: 0;
-  list-style: none;
-}
-.platforms li {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 45px;
-  padding: 9px 13px;
-  border: 1px solid #abb4e138;
-  border-radius: 6px;
-  background: #aaa6d307;
-  font-size: 14px;
-  color: #e7e8f2;
-}
-.platforms svg {
-  color: #a6a8c6;
-}
-.beta {
-  color: #a9a7c2;
-  font-size: 14px;
-}
-.platformNote {
-  margin: 0 0 17px;
-  color: #999eb7;
-  font-size: 14px;
+.devicePlatforms {
+  margin: 27px 0 24px;
 }
 .faqHeading {
   margin: 0 0 23px;
@@ -551,12 +522,6 @@
   .reportTitle {
     font-size: 16px;
     gap: 8px;
-  }
-  .platforms {
-    gap: 8px;
-  }
-  .platforms li {
-    padding-inline: 10px;
   }
   .question summary {
     gap: 15px;

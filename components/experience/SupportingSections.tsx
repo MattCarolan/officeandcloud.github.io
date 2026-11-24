@@ -4,11 +4,9 @@ import {
   Check,
   ChevronDown,
   FileText,
-  Laptop,
-  Monitor,
-  Terminal,
 } from "lucide-react";
 import { APP_SIGN_IN_URL } from "@/lib/config";
+import { PlatformSupport } from "./PlatformSupport";
 import styles from "./SupportingSections.module.css";
 
 const expenditure = [
@@ -209,32 +207,13 @@ export function SupportingSections() {
             <p className={styles.eyebrow}>Connected to your devices</p>
             <h2 className={styles.deviceHeading}>Start where AI is used.</h2>
             <p className={styles.description}>
-              Enrol devices to discover supported AI apps and apply supported
-              policies. Record who is accountable for each AI agent or app and
-              how it is used.
+              Discover AI apps across your devices, apply policies and keep
+              ownership clear. Bring your AI workforce into one accountable
+              register.
             </p>
-            <ul
-              className={styles.platforms}
-              aria-label="Available device agent platforms"
-            >
-              <li>
-                <Monitor size={18} aria-hidden="true" />
-                <span>Windows</span>
-              </li>
-              <li>
-                <Laptop size={18} aria-hidden="true" />
-                <span>macOS</span>
-                <span className={styles.beta}>Beta</span>
-              </li>
-              <li>
-                <Terminal size={18} aria-hidden="true" />
-                <span>Linux</span>
-                <span className={styles.beta}>Beta</span>
-              </li>
-            </ul>
-            <p className={styles.platformNote}>
-              Capabilities vary by platform.
-            </p>
+            <div className={styles.devicePlatforms}>
+              <PlatformSupport />
+            </div>
             <a className={styles.textLink} href={APP_SIGN_IN_URL}>
               Manage device agents <ArrowUpRight size={17} aria-hidden="true" />
             </a>

@@ -1,0 +1,119 @@
+.platformSupport {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  min-width: 0;
+}
+
+.operatingSystems,
+.browsers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(20px, 2.5vw, 38px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.operatingSystems li,
+.browsers li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f0eff9;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.operatingSystems img,
+.browsers img {
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.browsers {
+  padding-left: 32px;
+  border-left: 1px solid rgba(180, 166, 230, 0.22);
+  gap: clamp(16px, 1.9vw, 28px);
+}
+
+.browsers li {
+  color: #d2d5e6;
+  font-size: 12px;
+  gap: 8px;
+}
+
+@media (max-width: 1199px) {
+  .platformSupport {
+    gap: 24px;
+  }
+  .operatingSystems {
+    gap: 24px;
+  }
+  .browsers {
+    padding-left: 24px;
+    gap: 18px;
+  }
+  .browsers li {
+    flex-direction: column;
+    gap: 7px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 900px) {
+  .platformSupport {
+    width: 100%;
+  }
+  .operatingSystems {
+    gap: 26px;
+  }
+  .operatingSystems li {
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .browsers {
+    flex: 1;
+    max-width: 360px;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .platformSupport {
+    display: block;
+  }
+  .operatingSystems,
+  .browsers {
+    display: grid;
+    width: 100%;
+    max-width: none;
+    gap: 12px;
+  }
+  .operatingSystems {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .operatingSystems li,
+  .browsers li {
+    justify-content: center;
+  }
+  .operatingSystems li {
+    font-size: 12px;
+  }
+  .browsers {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 23px;
+    padding: 21px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(180, 166, 230, 0.16);
+  }
+  .browsers li {
+    font-size: 11px;
+  }
+}

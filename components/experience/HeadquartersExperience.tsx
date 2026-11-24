@@ -13,21 +13,19 @@ import {
   Coins,
   Cpu,
   Gauge,
-  Laptop,
   Menu,
-  Monitor,
   Pause,
   Play,
   ScanSearch,
   ShieldCheck,
   SlidersHorizontal,
-  Terminal,
   X,
 } from "lucide-react";
 import { APP_SIGN_IN_URL } from "@/lib/config";
 import { Logo } from "@/components/ui/Logo";
 import { SupportingSections } from "./SupportingSections";
 import { PreviewAccess } from "./PreviewAccess";
+import { PlatformSupport } from "./PlatformSupport";
 import styles from "./HeadquartersExperience.module.css";
 
 const HeadquartersScene = dynamic(() => import("./HeadquartersScene"), {
@@ -396,32 +394,13 @@ export function HeadquartersExperience() {
             className={styles.heroSupport}
             id="supported-platforms"
             role="region"
-            aria-label="Device agent platform support"
+            aria-label="Supported platforms"
           >
             <div className={styles.heroSupportInner}>
               <div className={styles.supportHeading}>
-                <a href="#device-agents">Device agents</a>
-                <span>Capabilities vary by platform.</span>
+                <a href="#device-agents">Supported</a>
               </div>
-              <ul
-                className={styles.supportPlatforms}
-                aria-label="Supported operating systems"
-              >
-                <li>
-                  <Monitor size={19} aria-hidden="true" />
-                  <strong>Windows</strong>
-                </li>
-                <li>
-                  <Laptop size={19} aria-hidden="true" />
-                  <strong>macOS</strong>
-                  <span>Beta</span>
-                </li>
-                <li>
-                  <Terminal size={19} aria-hidden="true" />
-                  <strong>Linux</strong>
-                  <span>Beta</span>
-                </li>
-              </ul>
+              <PlatformSupport includeBrowsers />
             </div>
           </div>
         </section>
