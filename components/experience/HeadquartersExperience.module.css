@@ -408,14 +408,6 @@
   color: var(--oc-muted);
   margin: 0;
 }
-.introAside span {
-  display: inline-block;
-  margin-top: 15px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: #a3aac2;
-}
 .explorer {
   display: grid;
   grid-template-columns: 28% 43% 29%;
@@ -1224,13 +1216,6 @@
   .introAside p {
     font-size: 14px;
     max-width: 220px;
-  }
-  .introAside span {
-    font-size: 10px;
-    margin: 0;
-    max-width: 105px;
-    text-align: right;
-    line-height: 1.6;
   }
   .explorer {
     display: flex;
