@@ -99,11 +99,6 @@
 .sectionLabel .eyebrow {
   color: #b99cfa;
 }
-.annotation {
-  color: #a7abc5;
-  font-size: 14px;
-  line-height: 1.4;
-}
 .sectionHeading {
   margin: 0 0 15px;
   font-family: var(--font-display), sans-serif;

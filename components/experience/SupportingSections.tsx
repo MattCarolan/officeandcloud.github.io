@@ -79,7 +79,6 @@ export function SupportingSections() {
           <article className={styles.spend} aria-labelledby="spend-heading">
             <div className={styles.sectionLabel}>
               <span className={styles.eyebrow}>AI economics</span>
-              <span className={styles.annotation}>Illustrative data</span>
             </div>
             <h2 id="spend-heading" className={styles.sectionHeading}>
               See the spend.
@@ -96,7 +95,7 @@ export function SupportingSections() {
               </p>
               <ul
                 className={styles.bars}
-                aria-label="Illustrative recorded expenditure by team"
+                aria-label="Recorded expenditure by team"
               >
                 {expenditure.map(({ team, amount, color }) => (
                   <li key={team}>
@@ -127,7 +126,6 @@ export function SupportingSections() {
           <article className={styles.reports} aria-labelledby="reports-heading">
             <div className={styles.sectionLabel}>
               <span className={styles.eyebrow}>Reports</span>
-              <span className={styles.annotation}>Illustrative report</span>
             </div>
             <h2 id="reports-heading" className={styles.sectionHeading}>
               Show the evidence.
@@ -169,11 +167,10 @@ export function SupportingSections() {
                 </dl>
                 <div className={styles.reportFooter}>
                   <span>Office &amp; Cloud</span>
-                  <span>Illustrative report</span>
                 </div>
               </div>
               <figcaption id="report-caption" className={styles.srOnly}>
-                Illustrative AI transparency report for Customer Success AI,
+                AI transparency report for Customer Success AI,
                 combining an AI agent record, risk and impact assessment, human
                 owner and review date.
               </figcaption>

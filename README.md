@@ -20,7 +20,7 @@ The platform section is headed **One AI workforce. Five layers of oversight.** I
 | AI Economics | What does our AI workforce cost? |
 | Performance & Value | Which AI agents should we keep using? |
 
-The approved visual direction and internal authoring guardrails are preserved in [the headquarters design brief](docs/HEADQUARTERS-DESIGN.md). Read it before changing the experience or marketing claims. Example records and expenditure are labelled illustrative. **CAD 490 remains recorded Customer Success team expenditure.**
+The approved visual direction and internal authoring guardrails are preserved in [the headquarters design brief](docs/HEADQUARTERS-DESIGN.md). Read it before changing the experience or marketing claims. The artwork's example records and expenditure are documented internally; public copy uses direct product labels without illustrative badges. **CAD 490 remains recorded Customer Success team expenditure.**
 
 ### Internal authoring guardrails
 

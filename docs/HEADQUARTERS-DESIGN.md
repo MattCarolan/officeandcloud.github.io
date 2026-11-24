@@ -16,7 +16,7 @@ Lead with what Office & Cloud does and why it matters. The approved hero body is
 
 Describe concrete benefits: see the AI workforce, establish clear policies, assign human owners, review risk and understand spending. Keep the tone direct and confident. The FAQ covers **discovery, costs, governance, shareable evidence and getting started**.
 
-The platform introduction states its capabilities directly, without a separate walkthrough label.
+The platform introduction states its capabilities directly, without a separate walkthrough label. The hero record is labelled **AI agent**. Use direct product labels in the hero, platform, spend and report sections. Keep example-data annotations in internal authoring notes.
 
 Capability boundaries belong in the internal authoring guardrails below. Do not turn them into public negative feature disclaimers, explanations about where people enter prompts or perform day-to-day work, or explanations of what "payroll" does not mean. Use accurate, positive descriptions of the supported features.
 
@@ -42,7 +42,7 @@ The following boundaries are for contributors and claim review, not proposed mar
 | AI Economics | Recorded expenses, licences, token estimates, budgets and alerts | Example CAD 490 is Customer Success team expenditure, never an agent salary, payroll transaction or live metering of one agent |
 | Performance & Value | Ownership gaps, upcoming reviews and available evidence | No invented automated ROI or hiring/firing decisions |
 
-All sample records and spending values are labelled illustrative. The expenditure example totals CAD 1,670: Engineering 840, Customer Success 490, Product 340. Showing Customer Success AI beside this evidence does not attribute the entire team's spending to that agent. Payroll transactions and prompt routing are not part of the approved feature claims; keep that scope check internal rather than presenting it as a public disclaimer.
+The marketing artwork uses example records and spending values to demonstrate product features. Keep this example-data context internal. The expenditure example totals CAD 1,670: Engineering 840, Customer Success 490, Product 340. Showing Customer Success AI beside this evidence does not attribute the entire team's spending to that agent. Payroll transactions and prompt routing are not part of the approved feature claims; keep that scope check internal rather than presenting it as a public disclaimer.
 
 ## Page sequence
 

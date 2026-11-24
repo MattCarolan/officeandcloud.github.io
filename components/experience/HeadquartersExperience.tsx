@@ -376,7 +376,7 @@ export function HeadquartersExperience() {
                   <Cpu aria-hidden="true" size={23} />
                   <div>
                     <strong>Customer Success AI</strong>
-                    <span>AI agent · Illustrative data</span>
+                    <span>AI agent</span>
                   </div>
                 </div>
                 <dl>
@@ -575,7 +575,7 @@ export function HeadquartersExperience() {
                   <h3>{pillar.heading}</h3>
                   {pillar.id === "ai-economics" && (
                     <p className={styles.spendValue}>
-                      CAD 490<span>Illustrative recorded team spend</span>
+                      CAD 490<span>Recorded team spend</span>
                     </p>
                   )}
                   <dl>
@@ -624,7 +624,7 @@ export function HeadquartersExperience() {
             <p className={styles.noScript}>
               The five pillars connect discovery, device policies, risk
               assessments, recorded AI costs and human review. Enable JavaScript
-              to explore the illustrative AI record interactively.
+              to explore the AI agent record interactively.
             </p>
           </noscript>
         </section>
