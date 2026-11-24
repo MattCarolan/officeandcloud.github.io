@@ -20,7 +20,7 @@ The platform section is headed **One AI workforce. Five layers of oversight.** I
 | AI Economics | What does our AI workforce cost? |
 | Performance & Value | Which AI agents should we keep using? |
 
-The approved visual direction and internal authoring guardrails are preserved in [the headquarters design brief](docs/HEADQUARTERS-DESIGN.md). Read it before changing the experience or marketing claims. Example records and expenditure are labelled illustrative. **CAD 490 remains recorded Customer Success team expenditure.**
+The approved visual direction and internal authoring guardrails are preserved in [the headquarters design brief](docs/HEADQUARTERS-DESIGN.md). Read it before changing the experience or marketing claims. The artwork's example records and expenditure are documented internally; public copy uses direct product labels without illustrative badges. **CAD 490 remains recorded Customer Success team expenditure.**
 
 ### Internal authoring guardrails
 
@@ -28,6 +28,7 @@ These constraints guide contributors and claim review; they are not copy to disp
 
 - Preserve the distinction between recorded team expenditure and costs attributed to an individual AI agent. The CAD 490 example is team spending, not a salary or measured agent bill.
 - Do not invent payroll transactions, prompt routing, universal agent discovery, universal runtime enforcement or automated ROI as shipped capabilities.
+- Keep operating-system feature differences in internal capability guidance. The Supported strip describes platform coverage, not feature parity. Add browser logos only for verified web-app access; those logos do not imply browser agents or extensions.
 - Do not turn these boundaries into public feature disclaimers, explanations about prompts or day-to-day work, or explanations of what "payroll" does not mean. Sell the product's supported benefits.
 
 ## Stack and architecture
@@ -44,7 +45,7 @@ The homepage is composed by `HeadquartersExperience`. Its primary content and co
 
 ### One 3D scene, with a useful fallback
 
-The opening hero uses an optimized image with gentle pointer depth. A compact operating-system strip sits directly beneath it: **Windows**, **macOS Beta** and **Linux Beta**, with the caveat **Capabilities vary by platform.** and a link to the detailed device agents section. The architectural artwork visibly overlaps the hero-to-strip boundary while the strip's labels and link remain readable and usable.
+The opening hero uses an optimized image with gentle pointer depth. A compact **Supported** strip sits directly beneath it, with recognizable official brand silhouettes for **Windows**, **macOS** and **Linux**, readable and accessible names, and a link to the detailed device agents section. Browser logos may also appear for verified web-app access. Keep the public strip clean, without maturity badges or capability caveats. The architectural artwork visibly overlaps the hero-to-strip boundary while the strip's logos, labels and link remain readable and usable.
 
 On mobile, a portrait crop of the architecture sits behind the headline and body. Near-white and pale-lavender type stays readable over a dark gradient that fades into the vivid lower artwork. Keep the copy in normal document flow and reserve space for the floating agent record below the CTAs. Preserve actual image overlap into the operating-system strip and readable OS labels. These mobile refinements leave the desktop composition intact.
 
@@ -158,7 +159,7 @@ Repository Pages settings must use **GitHub Actions** as the build/deployment so
 - [ ] Lint, TypeScript and production static export pass; inspect the exported site rather than relying only on development mode.
 - [ ] All five pillar states, direct hash links, keyboard controls and evidence panels work.
 - [ ] Check desktop and 320px/390px layouts, visible mobile sign-in, focus styling and absence of horizontal overflow.
-- [ ] Confirm the hero artwork visibly overlaps the operating-system strip without covering Windows, macOS Beta, Linux Beta, the capability caveat or the device-section link.
+- [ ] Confirm the hero artwork visibly overlaps the Supported strip without covering its official Windows/macOS/Linux brand silhouettes, readable names, any verified web-app browser logos or the device-section link.
 - [ ] Confirm the approved hero copy, Customer Success AI record and team-level spend remain consistent. Public copy sells visibility, policy boundaries, accountability, risk oversight and cost control; review claims against the internal authoring guardrails.
 - [ ] Verify delayed scene loading, WebGL fallback, reduced motion, the pause control and offscreen/hidden-tab rendering behavior.
 - [ ] Verify preview validation, exact payload and success/failure with **intercepted requests only**; make **no real test form submission**.

@@ -4,11 +4,9 @@ import {
   Check,
   ChevronDown,
   FileText,
-  Laptop,
-  Monitor,
-  Terminal,
 } from "lucide-react";
 import { APP_SIGN_IN_URL } from "@/lib/config";
+import { PlatformSupport } from "./PlatformSupport";
 import styles from "./SupportingSections.module.css";
 
 const expenditure = [
@@ -79,7 +77,6 @@ export function SupportingSections() {
           <article className={styles.spend} aria-labelledby="spend-heading">
             <div className={styles.sectionLabel}>
               <span className={styles.eyebrow}>AI economics</span>
-              <span className={styles.annotation}>Illustrative data</span>
             </div>
             <h2 id="spend-heading" className={styles.sectionHeading}>
               See the spend.
@@ -96,7 +93,7 @@ export function SupportingSections() {
               </p>
               <ul
                 className={styles.bars}
-                aria-label="Illustrative recorded expenditure by team"
+                aria-label="Recorded expenditure by team"
               >
                 {expenditure.map(({ team, amount, color }) => (
                   <li key={team}>
@@ -127,7 +124,6 @@ export function SupportingSections() {
           <article className={styles.reports} aria-labelledby="reports-heading">
             <div className={styles.sectionLabel}>
               <span className={styles.eyebrow}>Reports</span>
-              <span className={styles.annotation}>Illustrative report</span>
             </div>
             <h2 id="reports-heading" className={styles.sectionHeading}>
               Show the evidence.
@@ -169,11 +165,10 @@ export function SupportingSections() {
                 </dl>
                 <div className={styles.reportFooter}>
                   <span>Office &amp; Cloud</span>
-                  <span>Illustrative report</span>
                 </div>
               </div>
               <figcaption id="report-caption" className={styles.srOnly}>
-                Illustrative AI transparency report for Customer Success AI,
+                AI transparency report for Customer Success AI,
                 combining an AI agent record, risk and impact assessment, human
                 owner and review date.
               </figcaption>
@@ -212,32 +207,13 @@ export function SupportingSections() {
             <p className={styles.eyebrow}>Connected to your devices</p>
             <h2 className={styles.deviceHeading}>Start where AI is used.</h2>
             <p className={styles.description}>
-              Enrol devices to discover supported AI apps and apply supported
-              policies. Record who is accountable for each AI agent or app and
-              how it is used.
+              Discover AI apps across your devices, apply policies and keep
+              ownership clear. Bring your AI workforce into one accountable
+              register.
             </p>
-            <ul
-              className={styles.platforms}
-              aria-label="Available device agent platforms"
-            >
-              <li>
-                <Monitor size={18} aria-hidden="true" />
-                <span>Windows</span>
-              </li>
-              <li>
-                <Laptop size={18} aria-hidden="true" />
-                <span>macOS</span>
-                <span className={styles.beta}>Beta</span>
-              </li>
-              <li>
-                <Terminal size={18} aria-hidden="true" />
-                <span>Linux</span>
-                <span className={styles.beta}>Beta</span>
-              </li>
-            </ul>
-            <p className={styles.platformNote}>
-              Capabilities vary by platform.
-            </p>
+            <div className={styles.devicePlatforms}>
+              <PlatformSupport />
+            </div>
             <a className={styles.textLink} href={APP_SIGN_IN_URL}>
               Manage device agents <ArrowUpRight size={17} aria-hidden="true" />
             </a>

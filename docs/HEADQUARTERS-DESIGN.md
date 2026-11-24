@@ -16,7 +16,7 @@ Lead with what Office & Cloud does and why it matters. The approved hero body is
 
 Describe concrete benefits: see the AI workforce, establish clear policies, assign human owners, review risk and understand spending. Keep the tone direct and confident. The FAQ covers **discovery, costs, governance, shareable evidence and getting started**.
 
-The platform introduction states its capabilities directly, without a separate walkthrough label.
+The platform introduction states its capabilities directly, without a separate walkthrough label. The hero record is labelled **AI agent**. Use direct product labels in the hero, platform, spend and report sections. Keep example-data annotations in internal authoring notes.
 
 Capability boundaries belong in the internal authoring guardrails below. Do not turn them into public negative feature disclaimers, explanations about where people enter prompts or perform day-to-day work, or explanations of what "payroll" does not mean. Use accurate, positive descriptions of the supported features.
 
@@ -26,13 +26,15 @@ One real-time 3D scene receives the main animation budget. Five acrylic architec
 
 The opening uses an optimized, locally served architectural asset. This keeps the main message immediately available and avoids running two WebGL scenes. The hero's gentle pointer depth stops when motion is paused or reduced motion is requested. Scene loading is deferred until the platform is close to the viewport. The scene pauses when not visible or when motion is disabled, and stops rendering after user-driven motion settles.
 
-Directly beneath the hero, restore a compact operating-system strip showing **Windows**, **macOS Beta** and **Linux Beta**. Include **Capabilities vary by platform.** and a link to the detailed device agents section. The architectural artwork itself must visibly cross the hero-to-strip boundary, reinforcing the image's projection out of the page. Preserve readable labels and an unobstructed link across desktop and mobile layouts; a background glow alone does not satisfy the artwork-overlap requirement.
+Directly beneath the hero, keep a clean **Supported** strip showing recognizable official brand silhouettes for **Windows**, **macOS** and **Linux**, with readable and accessible names and a link to the detailed device agents section. Include browser logos for web-app access only when that compatibility has been verified. Public support labels have no maturity badges or capability caveats. The architectural artwork itself must visibly cross the hero-to-strip boundary, reinforcing the image's projection out of the page. Preserve recognizable logos, readable labels and an unobstructed link across desktop and mobile layouts; a background glow alone does not satisfy the artwork-overlap requirement.
 
 For mobile, place a portrait crop behind the headline and body, with near-white and pale-lavender type protected by a dark gradient that fades into the vivid lower architecture. Keep the copy in normal document flow and reserve room for the floating agent record below the CTAs. The actual artwork still overlaps the operating-system strip, whose labels and link remain readable and usable. Preserve the desktop composition.
 
 ## Internal authoring guardrails
 
 The following boundaries are for contributors and claim review, not proposed marketing copy or FAQ answers. They keep the benefits truthful while the public page focuses on what customers can accomplish. Preserve the contractor oversight model without depicting AI software as human employees or inventing product capabilities.
+
+The Supported strip communicates platform coverage, not operating-system feature parity. Keep factual device-agent feature differences in internal capability guidance. Browser logos require verified web-app access and must not imply that a browser agent or extension exists. These internal distinctions do not become public strip caveats.
 
 | Pillar | Evidence supporting the public benefits | Authoring boundary (internal) |
 | --- | --- | --- |
@@ -42,12 +44,12 @@ The following boundaries are for contributors and claim review, not proposed mar
 | AI Economics | Recorded expenses, licences, token estimates, budgets and alerts | Example CAD 490 is Customer Success team expenditure, never an agent salary, payroll transaction or live metering of one agent |
 | Performance & Value | Ownership gaps, upcoming reviews and available evidence | No invented automated ROI or hiring/firing decisions |
 
-All sample records and spending values are labelled illustrative. The expenditure example totals CAD 1,670: Engineering 840, Customer Success 490, Product 340. Showing Customer Success AI beside this evidence does not attribute the entire team's spending to that agent. Payroll transactions and prompt routing are not part of the approved feature claims; keep that scope check internal rather than presenting it as a public disclaimer.
+The marketing artwork uses example records and spending values to demonstrate product features. Keep this example-data context internal. The expenditure example totals CAD 1,670: Engineering 840, Customer Success 490, Product 340. Showing Customer Success AI beside this evidence does not attribute the entire team's spending to that agent. Payroll transactions and prompt routing are not part of the approved feature claims; keep that scope check internal rather than presenting it as a public disclaimer.
 
 ## Page sequence
 
 1. Projecting architectural hero with **HR & payroll for AI agents.**, the approved contractor headline and a clear primary action.
-2. Operating-system strip directly under the hero, with actual artwork overlap, Windows/macOS Beta/Linux Beta, the capability caveat and a device-section link.
+2. **Supported** strip directly under the hero, with actual artwork overlap, official Windows/macOS/Linux brand silhouettes, verified browser logos for web-app access where available, and a device-section link.
 3. **One AI workforce. Five layers of oversight.** Interactive headquarters with all five pillars visible and the same Customer Success AI agent record throughout.
 4. Editorial statement: **Set the policies. Know the cost.** Connect it to the benefits of clear ownership, policy boundaries and cost oversight.
 5. **See the spend.** and **Show the evidence.**, with purposeful visual variation.
