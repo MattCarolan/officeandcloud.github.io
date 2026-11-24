@@ -22,13 +22,23 @@ Capability boundaries belong in the internal authoring guardrails below. Do not 
 
 ## The signature scene
 
-One real-time 3D scene receives the main animation budget. Five acrylic architectural floors surround a shared light spine. Selecting a pillar brings its corresponding floor forward, adjusts its light and changes the evidence panel. Native HTML controls and evidence remain independent of WebGL. Pointer interaction is an enhancement; touch, keyboard, reduced motion and a motion-aware SVG fallback must remain useful. The fallback keeps the same document module moving between floors and becomes static when motion is paused.
+The full desktop explorer remains unchanged: one real-time 3D scene receives the main animation budget. Five acrylic architectural floors surround a shared light spine. Selecting a pillar brings its corresponding floor forward, adjusts its light and changes the evidence panel. Native HTML controls and evidence remain independent of WebGL. Pointer interaction is an enhancement; touch, keyboard, reduced motion and a motion-aware SVG fallback must remain useful. The desktop fallback keeps the same document module moving between floors and becomes static when motion is paused.
 
 The opening uses an optimized, locally served architectural asset. This keeps the main message immediately available and avoids running two WebGL scenes. The hero's gentle pointer depth stops when motion is paused or reduced motion is requested. Scene loading is deferred until the platform is close to the viewport. The scene pauses when not visible or when motion is disabled, and stops rendering after user-driven motion settles.
 
 Directly beneath the hero, keep a clean **Supported** strip showing recognizable official brand silhouettes for **Windows**, **macOS** and **Linux**, with readable and accessible names and a link to the detailed device agents section. Include browser logos for web-app access only when that compatibility has been verified. Public support labels have no maturity badges or capability caveats. The architectural artwork itself must visibly cross the hero-to-strip boundary, reinforcing the image's projection out of the page. Preserve recognizable logos, readable labels and an unobstructed link across desktop and mobile layouts; a background glow alone does not satisfy the artwork-overlap requirement.
 
 For mobile, place a portrait crop behind the headline and body, with near-white and pale-lavender type protected by a dark gradient that fades into the vivid lower architecture. Keep the copy in normal document flow and reserve room for the floating agent record below the CTAs. The actual artwork still overlaps the operating-system strip, whose labels and link remain readable and usable. Preserve the desktop composition.
+
+### Compact mobile pillar explorer
+
+At viewport widths of **700px or less**, present a compact interactive example card with a small architectural motif. This mobile presentation shares the desktop explorer's data, active pillar and deep links; the full desktop 3D composition and interactions remain intact above the breakpoint.
+
+- Keep all five icon selectors visible in a single row: **Discover**, **Govern**, **Risk**, **Costs** and **Value**. Use full pillar names in the selected heading and accessible selector names.
+- Provide swipe and previous/next controls as well as direct selection. Preserve keyboard access and reduced-motion behavior.
+- Keep default panel sizing consistent across the five states. **Why this matters** remains an optional disclosure; content must remain readable when it expands.
+- Do not mount the desktop WebGL scene on mobile, including a hidden canvas or scene component.
+- Preserve scroll position during normal selection. Align the compact panel only when it is currently clipped, so its selectors, navigation and example remain together in the viewport.
 
 ## Internal authoring guardrails
 
@@ -50,7 +60,7 @@ The marketing artwork uses example records and spending values to demonstrate pr
 
 1. Projecting architectural hero with **HR & payroll for AI agents.**, the approved contractor headline and a clear primary action.
 2. **Supported** strip directly under the hero, with actual artwork overlap, official Windows/macOS/Linux brand silhouettes, verified browser logos for web-app access where available, and a device-section link.
-3. **One AI workforce. Five layers of oversight.** Interactive headquarters with all five pillars visible and the same Customer Success AI agent record throughout.
+3. **One AI workforce. Five layers of oversight.** Full 3D headquarters on desktop and a compact interactive card at 700px or below, with all five selectors visible and the same Customer Success AI agent record throughout.
 4. Editorial statement: **Set the policies. Know the cost.** Connect it to the benefits of clear ownership, policy boundaries and cost oversight.
 5. **See the spend.** and **Show the evidence.**, with purposeful visual variation.
 6. Detailed device support and useful FAQ covering discovery, costs, governance, shareable evidence and getting started.
@@ -71,4 +81,6 @@ The marketing artwork uses example records and spending values to demonstrate pr
 
 Verify all five states, keyboard selection, 320px/390px mobile layout, visible sign-in, no horizontal overflow, scene fallback, reduced motion and pause controls. Check that actual hero artwork overlaps the operating-system strip while all its content remains usable. Confirm the approved hero copy, consistent Customer Success AI record and team-level spending labels. Public copy should sell visibility, policy boundaries, accountability, risk oversight and cost control; use the internal authoring guardrails to verify claim accuracy. Verify preview validation and success/failure using request interception. Build the static export and verify the deployed commit and custom domain. Performance work should preserve the clear static page before richer graphics load.
 
-Review captured **WebGL output as well as the SVG fallback**. The materials must read as dark architectural glass with purple/cyan edge light, every floor symbol must remain legible, and the full structure needs breathing room within the canvas. A passing render test is not a substitute for this visual review.
+For the compact mobile explorer, verify all five selectors remain in one row, full accessible names, swipe and previous/next navigation, stable default panel sizing and optional details. Selection should preserve the viewport when the panel is already visible, aligning it only when clipped so controls and evidence stay together. Confirm the desktop WebGL scene is not mounted on mobile, shared state and deep links survive breakpoint changes, and the full desktop explorer remains visually and functionally unchanged.
+
+Review captured **desktop WebGL output as well as its SVG fallback**, and inspect the compact mobile card separately. The desktop materials must read as dark architectural glass with purple/cyan edge light, every floor symbol must remain legible, and the full structure needs breathing room within the canvas. A passing render test is not a substitute for this visual review.

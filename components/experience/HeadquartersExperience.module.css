@@ -385,6 +385,14 @@
   position: relative;
   min-height: 600px;
 }
+.mobileExplorer {
+  display: none;
+  position: relative;
+  scroll-margin-top: 82px;
+}
+.mobileExplorer .pillarAnchor {
+  scroll-margin-top: 82px;
+}
 .pillarNavigation {
   position: relative;
   z-index: 3;
@@ -1171,8 +1179,10 @@
     max-width: 220px;
   }
   .explorer {
-    display: flex;
-    flex-direction: column;
+    display: none;
+  }
+  .mobileExplorer {
+    display: block;
   }
   .pillarNavigation {
     display: grid;

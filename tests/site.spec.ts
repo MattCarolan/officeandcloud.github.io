@@ -66,8 +66,173 @@ async function expectNoHorizontalOverflow(page: Page) {
     .toBeLessThanOrEqual(1);
 }
 
+function usesMobileExplorer(page: Page) {
+  return (page.viewportSize()?.width ?? 1440) <= 700;
+}
+
+async function expectMobileOnly(page: Page) {
+  await expect(page.locator("[data-mobile-explorer]")).toBeVisible();
+  await expect(page.locator("canvas")).toHaveCount(0);
+  await expect(page.locator("#pillar-evidence")).toHaveCount(0);
+  await expect(
+    page.getByRole("img", { name: /Five architectural layers represent/ }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", {
+      name: /^(Pause scene motion|Play scene motion|Motion disabled by your reduced-motion preference)$/,
+    }),
+  ).toHaveCount(0);
+}
+
+async function expectMobileViewport(page: Page) {
+  await expect
+    .poll(
+      () =>
+        page.locator("[data-mobile-explorer]").evaluate((explorer) => {
+          const choices = Array.from(
+            explorer.querySelectorAll(
+              'button[id^="mobile-pillar-"][aria-pressed]',
+            ),
+          );
+          const evidence = explorer.querySelector("#mobile-pillar-evidence");
+          if (choices.length !== 5 || !evidence) return false;
+          const headerBottom = Math.max(
+            0,
+            document.querySelector("header")?.getBoundingClientRect().bottom ??
+              0,
+          );
+          return [...choices, evidence].every((element) => {
+            const rect = element.getBoundingClientRect();
+            return (
+              rect.width > 0 &&
+              rect.height > 0 &&
+              rect.top >= headerBottom - 1 &&
+              rect.bottom <= window.innerHeight + 1 &&
+              rect.left >= -1 &&
+              rect.right <= window.innerWidth + 1
+            );
+          });
+        }),
+      {
+        message:
+          "All five choices and the default example should fit together below the mobile header.",
+      },
+    )
+    .toBe(true);
+  const evidence = page.locator("#mobile-pillar-evidence");
+  await expect(
+    evidence.getByText("Customer Success AI", { exact: true }),
+  ).toBeInViewport({ ratio: 0.99 });
+  await expect(
+    evidence.getByText("Customer Success lead", { exact: true }),
+  ).toBeInViewport({ ratio: 0.99 });
+  await expectNoHorizontalOverflow(page);
+}
+
+async function expectMobileSelection(page: Page, index: number) {
+  const [id, name, benefit] = pillars[index];
+  const explorer = page.locator("[data-mobile-explorer]");
+  const selector = page.locator(`#mobile-pillar-${id}`);
+  const evidence = page.locator("#mobile-pillar-evidence");
+  await expect(selector).toHaveAttribute("aria-pressed", "true");
+  await expect(selector).toHaveAttribute(
+    "aria-controls",
+    "mobile-pillar-evidence",
+  );
+  await expect(selector).toHaveAccessibleName(new RegExp(`^${name}\\b`));
+  await expect(explorer.locator('button[aria-pressed="true"]')).toHaveCount(1);
+  await expect(evidence).toHaveCount(1);
+  await expect(
+    evidence.getByRole("heading", { level: 3, name, exact: true }),
+  ).toBeVisible();
+  await expect(evidence.getByText(benefit, { exact: true })).toBeVisible();
+  await expect(
+    evidence.getByText("Customer Success AI", { exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    evidence.getByText("Customer Success lead", { exact: true }),
+  ).toHaveCount(1);
+  await expect(page).toHaveURL(new RegExp(`#${id}$`));
+}
+
+async function swipeMobileEvidence(
+  page: Page,
+  direction: "left" | "right" | "up",
+  distance?: number,
+) {
+  const box = await page.locator("#mobile-pillar-evidence").boundingBox();
+  if (!box)
+    throw new Error("The mobile example must be visible before swiping.");
+  const horizontal = direction !== "up";
+  const travel =
+    distance ??
+    (horizontal
+      ? Math.min(box.width * 0.56, 180)
+      : Math.min(box.height * 0.45, 160));
+  const centerX = box.x + box.width / 2;
+  const centerY = box.y + box.height / 2;
+  const from = horizontal
+    ? {
+        x: centerX + (direction === "left" ? travel / 2 : -travel / 2),
+        y: centerY,
+      }
+    : { x: centerX, y: centerY + travel / 2 };
+  const to = horizontal
+    ? {
+        x: centerX + (direction === "left" ? -travel / 2 : travel / 2),
+        y: centerY,
+      }
+    : { x: centerX, y: centerY - travel / 2 };
+  // Trusted touch input exercises the browser's native vertical scrolling.
+  const session = await page.context().newCDPSession(page);
+  const touch = (x: number, y: number) => ({
+    x,
+    y,
+    id: 1,
+    radiusX: 1,
+    radiusY: 1,
+    force: 1,
+  });
+  try {
+    await session.send("Input.dispatchTouchEvent", {
+      type: "touchStart",
+      touchPoints: [touch(from.x, from.y)],
+    });
+    for (let step = 1; step <= 6; step += 1) {
+      const progress = step / 6;
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [
+          touch(
+            from.x + (to.x - from.x) * progress,
+            from.y + (to.y - from.y) * progress,
+          ),
+        ],
+      });
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => resolve()),
+          ),
+      );
+    }
+  } finally {
+    await session.send("Input.dispatchTouchEvent", {
+      type: "touchEnd",
+      touchPoints: [],
+    });
+    await session.detach();
+  }
+}
+
 async function openExplorer(page: Page) {
-  await page.goto("/#platform");
+  await page.goto(usesMobileExplorer(page) ? "/#discovery" : "/#platform");
+  if (usesMobileExplorer(page)) {
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await expectMobileOnly(page);
+    await expectMobileViewport(page);
+    return page.locator("[data-mobile-explorer]");
+  }
   const scene = page.getByRole("img", {
     name: /Five architectural layers represent/,
   });
@@ -140,8 +305,12 @@ test("renders the production page, preserves mobile sign-in, and captures the de
   await expect(
     platformSupport.getByText("Windows", { exact: true }),
   ).toBeVisible();
-  await expect(platformSupport.getByText("macOS", { exact: true })).toBeVisible();
-  await expect(platformSupport.getByText("Linux", { exact: true })).toBeVisible();
+  await expect(
+    platformSupport.getByText("macOS", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    platformSupport.getByText("Linux", { exact: true }),
+  ).toBeVisible();
   await expect
     .poll(
       () =>
@@ -187,32 +356,90 @@ test("renders the production page, preserves mobile sign-in, and captures the de
   await page
     .getByRole("link", { name: "Explore the platform", exact: true })
     .click();
-  const scene = page.getByRole("img", {
-    name: /Five architectural layers represent/,
-  });
-  await scene.scrollIntoViewIfNeeded();
-  await expect(page.locator("[data-scene-ready]")).toHaveAttribute(
-    "data-scene-ready",
-    "true",
-    { timeout: 35_000 },
-  );
-  const explorerPath = info.outputPath("explorer.png");
-  await page
-    .locator("#platform")
-    .screenshot({ path: explorerPath, animations: "disabled" });
-  await info.attach("explorer", {
-    path: explorerPath,
-    contentType: "image/png",
-  });
+  if (usesMobileExplorer(page)) {
+    const explorer = page.locator("[data-mobile-explorer]");
+    await explorer.scrollIntoViewIfNeeded();
+    await expectMobileOnly(page);
+    await expectMobileViewport(page);
+    const explorerPath = info.outputPath("mobile-explorer.png");
+    await explorer.screenshot({ path: explorerPath, animations: "disabled" });
+    await info.attach("mobile-explorer", {
+      path: explorerPath,
+      contentType: "image/png",
+    });
+    await screenshot(page, info, "mobile-explorer-viewport");
+  } else {
+    const scene = page.getByRole("img", {
+      name: /Five architectural layers represent/,
+    });
+    await scene.scrollIntoViewIfNeeded();
+    await expect(page.locator("[data-scene-ready]")).toHaveAttribute(
+      "data-scene-ready",
+      "true",
+      { timeout: 35_000 },
+    );
+    const explorerPath = info.outputPath("explorer.png");
+    await page
+      .locator("#platform")
+      .screenshot({ path: explorerPath, animations: "disabled" });
+    await info.attach("explorer", {
+      path: explorerPath,
+      contentType: "image/png",
+    });
+  }
   await screenshot(page, info, "full-page", true);
   await expectNoHorizontalOverflow(page);
   expect(pageErrors).toEqual([]);
 });
 
-test("the five pillars change one AI record and keep a single scene", async ({
+test("the five pillars keep one AI record in the appropriate explorer", async ({
   page,
-}) => {
+}, info) => {
   const scene = await openExplorer(page);
+  if (usesMobileExplorer(page)) {
+    const selectors = scene.locator(
+      'button[id^="mobile-pillar-"][aria-pressed]',
+    );
+    await expect(selectors).toHaveCount(5);
+    const entryScroll = await page.evaluate(() => window.scrollY);
+    for (const [index, [id]] of pillars.entries()) {
+      // Check visibility before clicking, so Playwright cannot hide a required
+      // extra scroll by automatically bringing an off-screen choice into view.
+      await expectMobileViewport(page);
+      await page.locator(`#mobile-pillar-${id}`).click();
+      await expectMobileSelection(page, index);
+      await expectMobileViewport(page);
+      await expect
+        .poll(() =>
+          page.evaluate(
+            (start) => Math.abs(window.scrollY - start),
+            entryScroll,
+          ),
+        )
+        .toBeLessThanOrEqual(2);
+      await expectMobileOnly(page);
+      await screenshot(page, info, `mobile-${id}`);
+    }
+    await page.locator("#mobile-pillar-performance-value").press("Home");
+    await expect(page.locator("#mobile-pillar-discovery")).toBeFocused();
+    await page.locator("#mobile-pillar-discovery").press("ArrowRight");
+    await expect(page.locator("#mobile-pillar-governance")).toBeFocused();
+    await page.locator("#mobile-pillar-governance").press("End");
+    await expect(
+      page.locator("#mobile-pillar-performance-value"),
+    ).toBeFocused();
+    await page.locator("#mobile-pillar-performance-value").press("ArrowLeft");
+    await expect(page.locator("#mobile-pillar-ai-economics")).toBeFocused();
+    await expectMobileSelection(page, 3);
+    await scene
+      .getByRole("button", { name: "Why this matters", exact: true })
+      .click();
+    await expect(page.locator("#mobile-pillar-context")).toBeVisible();
+    await page.locator("#mobile-pillar-discovery").click();
+    await expect(page.locator("#mobile-pillar-context")).toHaveCount(0);
+    await expectMobileSelection(page, 0);
+    return;
+  }
   const originalScene = await scene.elementHandle();
   const originalCanvas = (await scene.locator("canvas").count())
     ? await scene.locator("canvas").elementHandle()
@@ -272,17 +499,68 @@ test("the five pillars change one AI record and keep a single scene", async ({
   await expect(page.locator("#pillar-context")).toHaveCount(0);
 });
 
+test("mobile paging and swiping preserve selection and native vertical scrolling", async ({
+  page,
+}) => {
+  test.skip(
+    !usesMobileExplorer(page),
+    "The compact explorer is a mobile interaction.",
+  );
+  const explorer = await openExplorer(page);
+  const entryScroll = await page.evaluate(() => window.scrollY);
+  for (const [buttonName, index] of [
+    ["Next pillar: Governance", 1],
+    ["Previous pillar: Discovery", 0],
+    ["Previous pillar: Performance & Value", 4],
+    ["Next pillar: Discovery", 0],
+  ] as const) {
+    await explorer
+      .getByRole("button", { name: buttonName, exact: true })
+      .click();
+    await expectMobileSelection(page, index);
+    await expectMobileViewport(page);
+  }
+  await swipeMobileEvidence(page, "left", 28);
+  await expectMobileSelection(page, 0);
+  await swipeMobileEvidence(page, "left");
+  await expectMobileSelection(page, 1);
+  await swipeMobileEvidence(page, "right");
+  await expectMobileSelection(page, 0);
+  await expectMobileViewport(page);
+  await expect
+    .poll(() =>
+      page.evaluate((start) => Math.abs(window.scrollY - start), entryScroll),
+    )
+    .toBeLessThanOrEqual(2);
+
+  const beforeVerticalSwipe = await page.evaluate(() => window.scrollY);
+  await swipeMobileEvidence(page, "up");
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(beforeVerticalSwipe + 30);
+  await expectMobileSelection(page, 0);
+  await expectMobileOnly(page);
+  await expectNoHorizontalOverflow(page);
+});
+
 test("deep links select a pillar and repeated lower links scroll back to it", async ({
   page,
 }) => {
+  const mobile = usesMobileExplorer(page);
   await page.goto("/#risk-security");
-  await expect(page.locator("#pillar-risk-security")).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
-  await expect(
-    page.locator("#pillar-evidence").getByRole("heading"),
-  ).toHaveText("Make risk reviewable.");
+  if (mobile) {
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+    await expectMobileSelection(page, 2);
+    await expectMobileViewport(page);
+  } else {
+    await expect(page.locator("#pillar-risk-security")).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    await expect(
+      page.locator("#pillar-evidence").getByRole("heading"),
+    ).toHaveText("Make risk reviewable.");
+  }
   const economicsLink = page.getByRole("link", {
     name: "Explore AI economics",
     exact: true,
@@ -291,26 +569,47 @@ test("deep links select a pillar and repeated lower links scroll back to it", as
     await economicsLink.scrollIntoViewIfNeeded();
     await economicsLink.click();
     await expect(page).toHaveURL(/#ai-economics$/);
-    await expect(page.locator("#pillar-ai-economics")).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
-    await expect
-      .poll(() =>
-        page.locator("#platform").evaluate((element) => {
-          const top = element.getBoundingClientRect().top;
-          return top >= 0 && top <= 125;
-        }),
-      )
-      .toBe(true);
+    if (mobile) {
+      await expectMobileSelection(page, 3);
+      await expectMobileViewport(page);
+      await expectMobileOnly(page);
+    } else {
+      await expect(page.locator("#pillar-ai-economics")).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+      await expect
+        .poll(() =>
+          page.locator("#platform").evaluate((element) => {
+            const top = element.getBoundingClientRect().top;
+            return top >= 0 && top <= 125;
+          }),
+        )
+        .toBe(true);
+    }
   }
 });
 
-test("motion can be paused, persists, and respects reduced motion", async ({
+test("motion preferences preserve the appropriate desktop and mobile experience", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await openExplorer(page);
+  if (usesMobileExplorer(page)) {
+    await expectMobileOnly(page);
+    await page.locator("#mobile-pillar-governance").click();
+    await expectMobileSelection(page, 1);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expectMobileSelection(page, 1);
+    await page.locator("#mobile-pillar-risk-security").click();
+    await expectMobileSelection(page, 2);
+    await expectMobileViewport(page);
+    await page.reload();
+    await expectMobileSelection(page, 2);
+    await expectMobileOnly(page);
+    await expectMobileViewport(page);
+    return;
+  }
   await page
     .getByRole("button", { name: "Pause scene motion", exact: true })
     .click();
