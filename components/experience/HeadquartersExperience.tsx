@@ -360,7 +360,7 @@ export function HeadquartersExperience() {
               <picture className={styles.heroPicture}>
                 <source
                   media="(max-width: 700px)"
-                  srcSet="/images/ai-headquarters-mobile.webp"
+                  srcSet="/images/ai-headquarters-mobile.webp 1x, /images/ai-headquarters.webp 2x"
                 />
                 <img
                   src="/images/ai-headquarters.webp"

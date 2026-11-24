@@ -1074,7 +1074,7 @@
     font-size: 14px;
   }
   .heroInner {
-    padding: 58px 24px 0;
+    padding: 58px 24px 112px;
     min-height: 0;
   }
   .heroCopy {
@@ -1085,17 +1085,27 @@
     font-size: 11px;
     letter-spacing: 0.1em;
     margin-bottom: 21px;
+    color: #8ee9f5;
   }
   .hero h1 {
     font-size: clamp(43px, 8.2vw, 58px);
     max-width: 570px;
     line-height: 1.06;
+    color: #fff;
+    text-shadow: 0 2px 18px rgba(2, 5, 15, 0.65);
+  }
+  .heroAccent {
+    color: #e0d0ff;
+    background: none;
+    -webkit-text-fill-color: currentColor;
   }
   .heroDescription {
     font-size: 16px;
     line-height: 1.75;
     max-width: 420px;
     margin-top: 24px;
+    color: #eef0f8;
+    text-shadow: 0 1px 10px rgba(2, 5, 15, 0.7);
   }
   .heroActions {
     margin-top: 26px;
@@ -1106,25 +1116,51 @@
     padding: 14px 18px;
     min-height: 49px;
   }
+  .heroActions .secondaryButton {
+    background: rgba(8, 11, 24, 0.9);
+    border-color: rgba(221, 215, 255, 0.5);
+  }
   .exploreCue {
     display: none;
   }
   .heroArtwork {
+    position: absolute;
+    top: 0;
+    bottom: -140px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 0;
+    aspect-ratio: auto;
+  }
+  .heroPicture {
     position: relative;
-    top: auto;
-    bottom: auto;
-    right: auto;
-    width: 132%;
-    margin: 4px -16% -66px;
-    aspect-ratio: 1.5;
+  }
+  .heroPicture::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 11, 24, 0.38) 0,
+      rgba(8, 11, 24, 0.68) 50px,
+      rgba(8, 11, 24, 0.68) calc(100% - 240px),
+      rgba(8, 11, 24, 0.05) calc(100% - 150px),
+      transparent 100%
+    );
   }
   .heroPicture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% bottom;
     mask-image: none;
     -webkit-mask-image: none;
   }
   .heroRecord {
-    right: 15%;
-    bottom: 5%;
+    right: 24px;
+    bottom: 48px;
     width: 240px;
     padding: 16px;
     transform: rotate(-3deg);
@@ -1140,7 +1176,7 @@
   }
   .heroSupportInner {
     display: block;
-    padding: 88px 24px 28px;
+    padding: 134px 24px 28px;
   }
   .supportHeading {
     gap: 5px;
@@ -1339,15 +1375,8 @@
   .heroActions a {
     min-width: 197px;
   }
-  .heroArtwork {
-    width: 142%;
-    margin-left: -21%;
-    margin-right: -21%;
-    margin-top: 10px;
-  }
   .heroRecord {
-    right: 18%;
-    bottom: 2%;
+    right: 20px;
     width: 215px;
     padding: 13px;
   }
