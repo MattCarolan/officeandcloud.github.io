@@ -24,9 +24,9 @@ const mono = localFont({
 });
 
 const siteUrl = "https://officeandcloud.com";
-const title = "Office & Cloud | Your AI workforce. Managed like contractors.";
+const title = "Office & Cloud | Take control of your AI workforce.";
 const description =
-  "Bring your AI workforce into view. Discover supported AI apps, set clear policies, manage risk and take control of AI expenses, licences and budgets with Office & Cloud.";
+  "Discover the AI your teams use, establish clear ownership and policies, and keep spending under control.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
