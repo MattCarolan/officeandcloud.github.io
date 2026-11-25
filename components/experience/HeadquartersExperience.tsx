@@ -333,16 +333,16 @@ export function HeadquartersExperience() {
         >
           <div className={styles.heroInner}>
             <div className={styles.heroCopy}>
-              <p className={styles.eyebrow}>HR &amp; payroll for AI agents</p>
+              <p className={styles.eyebrow}>
+                AI discovery, governance &amp; cost control
+              </p>
               <h1 id="hero-heading">
-                <span>Your AI workforce.</span>
-                <span>Managed like</span>
-                <span className={styles.heroAccent}>contractors.</span>
+                <span>Take control of</span>{" "}
+                <span className={styles.heroAccent}>your AI workforce.</span>
               </h1>
               <p className={styles.heroDescription}>
-                Know which AI agents are in use, set clear policy boundaries and
-                keep costs under control. Bring ownership, risk and spending
-                together in one place.
+                Discover the AI your teams use, establish clear ownership and
+                policies, and keep spending under control.
               </p>
               <div className={styles.heroActions}>
                 <a className={styles.button} href="#preview">

@@ -281,11 +281,8 @@ test("renders the production page, preserves mobile sign-in, and captures the de
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Your AI workforce.",
-  );
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "contractors.",
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Take control of your AI workforce.",
   );
   const heroImage = page.locator("#top picture img");
   await expect
